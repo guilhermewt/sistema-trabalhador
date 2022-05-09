@@ -1,6 +1,8 @@
 package com.projetoTrabalhador.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -15,7 +18,7 @@ import javax.persistence.Table;
 public class Worker implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -25,6 +28,9 @@ public class Worker implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "department_id")
 	private Department department;
+	
+	@OneToMany(mappedBy="worker")
+	private Set<HourContract> contracts = new HashSet<>();
 	
 	public Worker() {
 	}
@@ -63,6 +69,10 @@ public class Worker implements Serializable{
 
 	public Department getDepartment() {
 		return department;
+	}
+
+	public Set<HourContract> getContracts() {
+		return contracts;
 	}
 
 }
