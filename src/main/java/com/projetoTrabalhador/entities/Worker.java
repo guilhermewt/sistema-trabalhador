@@ -71,6 +71,10 @@ public class Worker implements Serializable{
 		return department;
 	}
 
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
 	public Set<HourContract> getContracts() {
 		return contracts;
 	}

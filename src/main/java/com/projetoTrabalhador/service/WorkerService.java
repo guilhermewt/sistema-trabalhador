@@ -2,13 +2,16 @@ package com.projetoTrabalhador.service;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.projetoTrabalhador.entities.Department;
 import com.projetoTrabalhador.entities.HourContract;
 import com.projetoTrabalhador.entities.Worker;
+import com.projetoTrabalhador.repository.DepartmentRepository;
 import com.projetoTrabalhador.repository.WorkerRepository;
 
 @Service
@@ -16,6 +19,9 @@ public class WorkerService {
 	
 	@Autowired
 	private WorkerRepository repository;
+	
+	@Autowired
+	private DepartmentRepository departmentRepository;
 
 	
 	public List<Worker> findAll(){
@@ -24,6 +30,13 @@ public class WorkerService {
 	
 	public Worker findById(long id){
 		return repository.findById(id);
+	}
+	
+	public Worker insert(Worker obj, long id) {
+		
+		Department depart = departmentRepository.findById(id);
+		obj.setDepartment(depart);
+		return repository.save(obj);
 	}
 	
 	public double income(long id,int year, int month) {
