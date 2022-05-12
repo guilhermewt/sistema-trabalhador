@@ -27,10 +27,22 @@ public class HourContractResource {
 		return ResponseEntity.ok().body(list);
 	}
 	
+	
 	@RequestMapping(value="/{id}", method = RequestMethod.POST)
 	public ResponseEntity<HourContract> insert(@RequestBody HourContract obj, @PathVariable long id){
-		
 		HourContract contract = service.insert(obj, id);
+		return ResponseEntity.ok().body(contract);
+	}
+	
+	@RequestMapping(value="/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable long id){
+		service.delete(id);
+		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(value="/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<HourContract> update(@RequestBody HourContract hourContract, @PathVariable long id){
+		HourContract contract = service.update(hourContract, id);
 		return ResponseEntity.ok().body(contract);
 	}
 }

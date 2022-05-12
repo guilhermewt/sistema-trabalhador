@@ -42,7 +42,17 @@ public class WorkerResource {
 		return ResponseEntity.ok().body(worker);
 	}
 	
+	@RequestMapping(value="/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable long id){
+		service.delete(id);
+		return ResponseEntity.noContent().build();
+	}
 	
+	@RequestMapping(value="/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Worker> update(@RequestBody Worker obj, @PathVariable long id){
+	    Worker worker = service.update(obj, id);
+	    return ResponseEntity.ok().body(worker);
+	}
 	
 	@RequestMapping(value = "/{id}/searchContracts", method = RequestMethod.GET)
 	public ResponseEntity<CalculateContractTimeDTO> calculateHourContract(@RequestParam(value="date",defaultValue="")String date, @PathVariable long id){

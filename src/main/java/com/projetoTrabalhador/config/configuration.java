@@ -19,6 +19,7 @@ public class configuration implements CommandLineRunner{
 
 	@Autowired
 	private WorkerRepository workerRepository;
+
 	
 	@Autowired
 	private DepartmentRepository departmentRepository;

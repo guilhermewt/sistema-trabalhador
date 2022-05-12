@@ -28,4 +28,21 @@ public class HourContractService {
 		obj.setWorker(worker);
 		return repository.save(obj);
 	}
+	
+	public void delete(Long id) {
+		repository.deleteById(id);
+	}
+	
+	public HourContract update(HourContract obj, long id) {
+		HourContract hc = repository.getOne(id);
+		updateData(hc,obj);
+		return repository.save(hc);
+	}
+
+	private void updateData(HourContract hc, HourContract obj) {
+		hc.setDate(obj.getDate());
+		hc.setValuePerHour(obj.getValuePerHour());
+		hc.setHour(obj.getHour());
+		
+	}
 }

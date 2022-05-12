@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,7 +30,7 @@ public class Worker implements Serializable{
 	@JoinColumn(name = "department_id")
 	private Department department;
 	
-	@OneToMany(mappedBy="worker")
+	@OneToMany(mappedBy="worker", cascade = CascadeType.ALL)
 	private Set<HourContract> contracts = new HashSet<>();
 	
 	public Worker() {

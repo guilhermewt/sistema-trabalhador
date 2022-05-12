@@ -39,6 +39,21 @@ public class WorkerService {
 		return repository.save(obj);
 	}
 	
+	public void delete(long id) {
+		repository.deleteById(id);
+	}
+	
+	public Worker update(Worker obj, long id) {
+		Worker worker = repository.getOne(id);
+		updateData(worker,obj);
+		return repository.save(worker);
+	}
+	
+	private void updateData(Worker worker, Worker obj) {
+		worker.setName(obj.getName());
+		worker.setBaseSalary(obj.getBaseSalary());
+	}
+
 	public double income(long id,int year, int month) {
 		Worker worker = repository.findById(id);
 		Double sum = worker.getBaseSalary();
