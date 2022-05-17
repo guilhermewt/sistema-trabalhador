@@ -13,6 +13,7 @@ import com.projetoTrabalhador.entities.HourContract;
 import com.projetoTrabalhador.entities.Worker;
 import com.projetoTrabalhador.repository.DepartmentRepository;
 import com.projetoTrabalhador.repository.WorkerRepository;
+import com.projetoTrabalhador.service.exceptions.ResourceNotFoundException;
 
 @Service
 public class WorkerService {
@@ -29,7 +30,8 @@ public class WorkerService {
 	}
 	
 	public Worker findById(long id){
-		return repository.findById(id);
+		Optional<Worker> obj = repository.findById(id);
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	public Worker insert(Worker obj, long id) {
@@ -44,7 +46,7 @@ public class WorkerService {
 	}
 	
 	public Worker update(Worker obj, long id) {
-		Worker worker = repository.getOne(id);
+		Worker worker = repository.findById(id).get();
 		updateData(worker,obj);
 		return repository.save(worker);
 	}
@@ -55,7 +57,7 @@ public class WorkerService {
 	}
 
 	public double income(long id,int year, int month) {
-		Worker worker = repository.findById(id);
+		Worker worker = repository.findById(id).get();
 		Double sum = worker.getBaseSalary();
 		
 		Set<HourContract> contracts = worker.getContracts();

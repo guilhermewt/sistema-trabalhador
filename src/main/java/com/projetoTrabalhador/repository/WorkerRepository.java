@@ -8,5 +8,4 @@ import com.projetoTrabalhador.entities.Worker;
 @Repository
 public interface WorkerRepository extends JpaRepository<Worker, Long>{
 
-	Worker findById(long id);
 }
