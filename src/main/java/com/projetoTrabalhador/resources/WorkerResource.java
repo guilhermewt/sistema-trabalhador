@@ -21,8 +21,7 @@ public class WorkerResource {
 
 	@Autowired
 	private WorkerService service;
-	
-	
+
 	@RequestMapping
 	public ResponseEntity<List<Worker>> findAll(){
 		
