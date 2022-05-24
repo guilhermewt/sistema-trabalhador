@@ -8,5 +8,5 @@ import com.projetoTrabalhador.entities.Department;
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department, Long>{
 	
-	Department findById(long id);
+
 }

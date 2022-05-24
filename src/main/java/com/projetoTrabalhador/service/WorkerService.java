@@ -38,7 +38,7 @@ public class WorkerService {
 
 	public Worker insert(Worker obj, long id) {
 
-		Department depart = departmentRepository.findById(id);
+		Department depart = departmentRepository.findById(id).get();
 		obj.setDepartment(depart);
 		return repository.save(obj);
 	}
