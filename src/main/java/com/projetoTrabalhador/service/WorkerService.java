@@ -8,6 +8,11 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.projetoTrabalhador.entities.Department;
@@ -18,8 +23,11 @@ import com.projetoTrabalhador.repository.WorkerRepository;
 import com.projetoTrabalhador.service.exceptions.DataBaseError;
 import com.projetoTrabalhador.service.exceptions.ResourceNotFoundException;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
-public class WorkerService {
+@RequiredArgsConstructor
+public class WorkerService implements UserDetailsService{
 
 	@Autowired
 	private WorkerRepository repository;
@@ -37,9 +45,11 @@ public class WorkerService {
 	}
 
 	public Worker insert(Worker obj, long id) {
-
+		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		obj.setPassword(passwordEncoder.encode(obj.getPassword()));
 		Department depart = departmentRepository.findById(id).get();
-		obj.setDepartment(depart);
+		obj.setDepartment(depart);	
+		
 		return repository.save(obj);
 	}
 
@@ -63,8 +73,12 @@ public class WorkerService {
 	}
 
 	private void updateData(Worker worker, Worker obj) {
+		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 		worker.setName(obj.getName());
+		worker.setUserName(obj.getUsername());
 		worker.setBaseSalary(obj.getBaseSalary());
+		worker.setPassword(passwordEncoder.encode(obj.getPassword()));
+		
 	}
 
 	public double income(long id, int year, int month) {
@@ -85,5 +99,11 @@ public class WorkerService {
 
 		}
 		return sum;
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username){
+		return Optional.ofNullable(repository.findByuserName(username))
+				.orElseThrow(() -> new UsernameNotFoundException("worker user not found"));
 	}
 }

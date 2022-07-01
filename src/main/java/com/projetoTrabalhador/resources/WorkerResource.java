@@ -27,15 +27,16 @@ public class WorkerResource {
 
 	@Autowired
 	private WorkerService service;
-
+	 
 	@RequestMapping
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<List<Worker>> findAll(){
-		
 		List<Worker> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 	
 	@RequestMapping(value = "/{id}",method = RequestMethod.GET)
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Worker> findById(@AuthenticationPrincipal UserDetails userDetails,  @PathVariable long id){
 		log.info(userDetails);
 		Worker obj = service.findById(id);
@@ -50,18 +51,21 @@ public class WorkerResource {
 	}
 	
 	@RequestMapping(value="/{id}", method = RequestMethod.DELETE)
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Void> delete(@PathVariable long id){
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@RequestMapping(value="/{id}", method = RequestMethod.PUT)
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Worker> update(@RequestBody Worker obj, @PathVariable long id){
 	    Worker worker = service.update(obj, id);
 	    return ResponseEntity.ok().body(worker);
 	}
 	
 	@RequestMapping(value = "/{id}/searchContracts", method = RequestMethod.GET)
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<CalculateContractTimeDTO> calculateHourContract(@RequestParam(value="date",defaultValue="")String date, @PathVariable long id){
 		String montAndYear = date;
 		int month = Integer.parseInt(montAndYear.substring(0, 2));

@@ -38,11 +38,13 @@ public class configuration implements CommandLineRunner{
 		
 		departmentRepository.saveAll(Arrays.asList(dep1,dep2,dep3));
 		
-		Worker worker = new Worker(null,"gustavo henrique",1200.0,dep1);
-		Worker worker2 = new Worker(null,"pedro castro",5000.0,dep2);
-		Worker worker3 = new Worker(null,"fernando canesin",1500.0,dep1);
+		Worker worker = new Worker(null,"guilherme henrique","guilherme",1200.0,"{bcrypt}$2a$10$kVStg9UcqLzpufBXvWsJ0uZmI6yuRtFo6/mFedY3w5bTb90VwjfuS","ROLE_ADMIN,ROLE_USER",dep1);
+		Worker worker2 = new Worker(null,"trabalhador","trabalhador",3200.0,"{bcrypt}$2a$10$kVStg9UcqLzpufBXvWsJ0uZmI6yuRtFo6/mFedY3w5bTb90VwjfuS","ROLE_USER",dep1);
+//		Worker worker2 = new Worker(null,"pedro castro",null,5000.0,null,dep2);
+//		Worker worker3 = new Worker(null,"fernando canesin",1500.0,dep1);
 		
-		workerRepository.saveAll(Arrays.asList(worker,worker2,worker3));
+//		workerRepository.saveAll(Arrays.asList(worker,worker2,worker3));
+		workerRepository.saveAll(Arrays.asList(worker,worker2));
 		
 
 		HourContract contra1 = new HourContract(null, sdf.parse("2018/08/20"), 50.0, 20, worker);
