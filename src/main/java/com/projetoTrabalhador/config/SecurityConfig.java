@@ -20,14 +20,14 @@ import lombok.extern.log4j.Log4j2;
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	private final WorkerService workerService;
-	
-	
-	
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable()
 		//.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()
 		.authorizeRequests()
+		.antMatchers("/workers/admin/**").hasRole("ADMIN")
+		.antMatchers("/workers/**").hasRole("USER")
 		.anyRequest()
 		.authenticated()
 		.and()

@@ -28,44 +28,38 @@ public class WorkerResource {
 	@Autowired
 	private WorkerService service;
 	 
-	@RequestMapping
-	@PreAuthorize("hasRole('ADMIN')")
+	@RequestMapping(value = "/admin")
 	public ResponseEntity<List<Worker>> findAll(){
 		List<Worker> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 	
-	@RequestMapping(value = "/{id}",method = RequestMethod.GET)
-	@PreAuthorize("hasRole('ADMIN')")
+	@RequestMapping(value = "/admin/{id}",method = RequestMethod.GET)
 	public ResponseEntity<Worker> findById(@AuthenticationPrincipal UserDetails userDetails,  @PathVariable long id){
 		log.info(userDetails);
 		Worker obj = service.findById(id);
 	    return ResponseEntity.ok().body(obj);
 	}
 	
-	@RequestMapping(value="/{id}",method = RequestMethod.POST)
-	@PreAuthorize("hasRole('ADMIN')")
+	@RequestMapping(value="/admin/{id}",method = RequestMethod.POST)
 	public ResponseEntity<Worker> insert(@RequestBody Worker obj,@PathVariable long id){
 		Worker worker = service.insert(obj, id);
 		return ResponseEntity.ok().body(worker);
 	}
 	
-	@RequestMapping(value="/{id}", method = RequestMethod.DELETE)
-	@PreAuthorize("hasRole('ADMIN')")
+	@RequestMapping(value="/admin/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable long id){
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@RequestMapping(value="/{id}", method = RequestMethod.PUT)
-	@PreAuthorize("hasRole('ADMIN')")
+	@RequestMapping(value="/admin/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Worker> update(@RequestBody Worker obj, @PathVariable long id){
 	    Worker worker = service.update(obj, id);
 	    return ResponseEntity.ok().body(worker);
 	}
 	
-	@RequestMapping(value = "/{id}/searchContracts", method = RequestMethod.GET)
-	@PreAuthorize("hasRole('ADMIN')")
+	@RequestMapping(value = "/admin/{id}/searchContracts", method = RequestMethod.GET)
 	public ResponseEntity<CalculateContractTimeDTO> calculateHourContract(@RequestParam(value="date",defaultValue="")String date, @PathVariable long id){
 		String montAndYear = date;
 		int month = Integer.parseInt(montAndYear.substring(0, 2));
