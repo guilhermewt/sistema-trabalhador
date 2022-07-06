@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -15,14 +14,15 @@ import com.projetoTrabalhador.repository.WorkerRepository;
 import com.projetoTrabalhador.service.exceptions.DataBaseError;
 import com.projetoTrabalhador.service.exceptions.ResourceNotFoundException;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class HourContractService {
 
-	@Autowired
-	private HourContractRepository repository;
+	private final HourContractRepository repository;
 
-	@Autowired
-	private WorkerRepository workerRepository;
+	private final WorkerRepository workerRepository;
 
 	public List<HourContract> findAll() {
 		return repository.findAll();

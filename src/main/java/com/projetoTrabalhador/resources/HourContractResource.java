@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projetoTrabalhador.entities.HourContract;
-import com.projetoTrabalhador.entities.Worker;
 import com.projetoTrabalhador.service.HourContractService;
 
 @RestController

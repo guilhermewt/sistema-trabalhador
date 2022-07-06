@@ -6,7 +6,6 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,12 +27,10 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class WorkerService implements UserDetailsService{
+	
+	private final WorkerRepository repository;
 
-	@Autowired
-	private WorkerRepository repository;
-
-	@Autowired
-	private DepartmentRepository departmentRepository;
+	private final DepartmentRepository departmentRepository;
 
 	public List<Worker> findAll() {
 		return repository.findAll();
@@ -78,7 +75,6 @@ public class WorkerService implements UserDetailsService{
 		worker.setUserName(obj.getUsername());
 		worker.setBaseSalary(obj.getBaseSalary());
 		worker.setPassword(passwordEncoder.encode(obj.getPassword()));
-		
 	}
 
 	public double income(long id, int year, int month) {

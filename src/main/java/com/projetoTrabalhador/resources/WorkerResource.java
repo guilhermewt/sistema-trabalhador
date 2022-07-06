@@ -2,9 +2,7 @@ package com.projetoTrabalhador.resources;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,15 +16,16 @@ import com.projetoTrabalhador.dto.CalculateContractTimeDTO;
 import com.projetoTrabalhador.entities.Worker;
 import com.projetoTrabalhador.service.WorkerService;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 @RestController
 @RequestMapping(value = "/workers")
 @Log4j2
+@RequiredArgsConstructor
 public class WorkerResource {
 
-	@Autowired
-	private WorkerService service;
+	private final WorkerService service;
 	 
 	@RequestMapping(value = "/admin")
 	public ResponseEntity<List<Worker>> findAll(){
@@ -69,4 +68,5 @@ public class WorkerResource {
 		Worker obj = service.findById(id);
 		return ResponseEntity.ok().body(new CalculateContractTimeDTO(obj, baseSalary));
 	}
+
 }

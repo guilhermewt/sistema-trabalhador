@@ -13,12 +13,18 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Entity
 @Table(name = "tb_hourContract")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class HourContract implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
-	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,58 +36,10 @@ public class HourContract implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "worker_id")
 	private Worker worker;
-	
-	public HourContract() {
-	}
-
-	public HourContract(Long id,Date date, Double valuePerHour, Integer hour, Worker worker) {
-		super();
-		this.id = id;
-		this.date = date;
-		this.valuePerHour = valuePerHour;
-		this.hour = hour;
-		this.worker = worker;
-	}
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	public Double getValuePerHour() {
-		return valuePerHour;
-	}
-
-	public void setValuePerHour(Double valuePerHour) {
-		this.valuePerHour = valuePerHour;
-	}
-
-	public Integer getHour() {
-		return hour;
-	}
-
-	public void setHour(Integer hour) {
-		this.hour = hour;
-	}
 
 	@JsonIgnore
 	public Worker getWorker() {
 		return worker;
 	}
 
-	public void setWorker(Worker worker) {
-		this.worker = worker;
-	}
-	
 }

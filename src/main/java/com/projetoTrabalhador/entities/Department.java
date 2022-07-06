@@ -12,9 +12,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
  
 @Entity
 @Table(name = "tb_department")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Department implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -27,34 +34,8 @@ public class Department implements Serializable{
 	@OneToMany(mappedBy = "department")
 	private Set<Worker> worker = new HashSet<>();
 	
-	public Department() {
-	}
-
-	public Department(Long id,String name) {
-		super();
-		this.id = id;
-		this.name = name;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	@JsonIgnore
 	public Set<Worker> getWorker() {
 		return worker;
 	}
-
 }

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +12,13 @@ import com.projetoTrabalhador.repository.DepartmentRepository;
 import com.projetoTrabalhador.service.exceptions.DataBaseError;
 import com.projetoTrabalhador.service.exceptions.ResourceNotFoundException;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class DepartmentService {
 	
-	@Autowired
-	private DepartmentRepository repository;
+	private final DepartmentRepository repository;
 	
 	public List<Department> findAll(){
 		return repository.findAll();
