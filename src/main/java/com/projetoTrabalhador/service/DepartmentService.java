@@ -1,15 +1,13 @@
 package com.projetoTrabalhador.service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.projetoTrabalhador.entities.Department;
 import com.projetoTrabalhador.repository.DepartmentRepository;
-import com.projetoTrabalhador.service.exceptions.DataBaseError;
+import com.projetoTrabalhador.requests.DepartmentPostRequestBody;
+import com.projetoTrabalhador.requests.DepartmentPutRequestBody;
 import com.projetoTrabalhador.service.exceptions.ResourceNotFoundException;
 
 import lombok.RequiredArgsConstructor;
@@ -21,41 +19,40 @@ public class DepartmentService {
 	private final DepartmentRepository repository;
 	
 	public List<Department> findAll(){
+		
 		return repository.findAll();
 	}
 	
-	public Department findById(long id) {
-		Optional<Department> obj = repository.findById(id);
-		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
+	
+	public Department findByIdOrThrowResourceNotFoundException(long id) {
+		
+		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
-	public Department insert(Department obj) {
-		return repository.save(obj);
+	
+	public Department insert(DepartmentPostRequestBody departmentPostRequestBody) {
+		
+		return repository.save(Department.builder()
+				.name(departmentPostRequestBody.getName())
+				.build());
 	}
 
+	
 	public void delete(long id) {
-
-		try {
-			repository.deleteById(id);
-		} catch (EmptyResultDataAccessException e) {
-			throw new DataBaseError(e.getMessage());
-		}
+		
+		repository.delete(findByIdOrThrowResourceNotFoundException(id));
 	}
 
-	public Department update(Department obj, long id) {
-		try {
-			Department depart = repository.findById(id).get();
-			updateData(depart, obj);
-			return repository.save(depart);
-		} catch (NoSuchElementException e) {
-			throw new DataBaseError(e.getMessage());
-		}
+	
+	public void update(DepartmentPutRequestBody departmentPutRequestBody) {
+		
+		Department savedDepartment = findByIdOrThrowResourceNotFoundException(departmentPutRequestBody.getId());
+		
+		Department department = Department.builder()
+				.id(savedDepartment.getId())
+				.name(departmentPutRequestBody.getName())
+				.build();
+		repository.save(department);
 	}
-
-	private void updateData(Department depart, Department obj) {
-		depart.setName(obj.getName());
-	}
-
-
 
 }
