@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.projetoTrabalhador.entities.Department;
+import com.projetoTrabalhador.mapper.DepartmentMapper;
 import com.projetoTrabalhador.repository.DepartmentRepository;
 import com.projetoTrabalhador.requests.DepartmentPostRequestBody;
 import com.projetoTrabalhador.requests.DepartmentPutRequestBody;
@@ -31,10 +32,7 @@ public class DepartmentService {
 
 	
 	public Department insert(DepartmentPostRequestBody departmentPostRequestBody) {
-		
-		return repository.save(Department.builder()
-				.name(departmentPostRequestBody.getName())
-				.build());
+		return repository.save(DepartmentMapper.INSTANCE.toDepartment(departmentPostRequestBody));
 	}
 
 	
@@ -47,11 +45,8 @@ public class DepartmentService {
 	public void update(DepartmentPutRequestBody departmentPutRequestBody) {
 		
 		Department savedDepartment = findByIdOrThrowResourceNotFoundException(departmentPutRequestBody.getId());
-		
-		Department department = Department.builder()
-				.id(savedDepartment.getId())
-				.name(departmentPutRequestBody.getName())
-				.build();
+		Department department = DepartmentMapper.INSTANCE.toDepartment(departmentPutRequestBody);
+		department.setId(savedDepartment.getId());
 		repository.save(department);
 	}
 
