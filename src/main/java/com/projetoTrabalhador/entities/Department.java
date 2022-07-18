@@ -13,17 +13,22 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
  
 @Entity
 @Table(name = "tb_department")
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Getter
+@Setter
+@EqualsAndHashCode(of= {"id","name"})
+@ToString
+@SuperBuilder
 public class Department implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -32,14 +37,22 @@ public class Department implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	
+
 	
 	
 	@OneToMany(mappedBy = "department")
+	@Builder.Default
 	private Set<Worker> worker = new HashSet<>();
+
+	public Department(Long id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
 	
 	@JsonIgnore
 	public Set<Worker> getWorker() {
 		return worker;
 	}
+
 }

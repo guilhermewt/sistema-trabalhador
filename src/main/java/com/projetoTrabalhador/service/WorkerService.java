@@ -14,11 +14,12 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.projetoTrabalhador.entities.Department;
 import com.projetoTrabalhador.entities.HourContract;
 import com.projetoTrabalhador.entities.Worker;
 import com.projetoTrabalhador.repository.DepartmentRepository;
 import com.projetoTrabalhador.repository.WorkerRepository;
+import com.projetoTrabalhador.requests.WorkerPostRequestBody;
+import com.projetoTrabalhador.requests.WorkerPutRequestBody;
 import com.projetoTrabalhador.service.exceptions.DataBaseError;
 import com.projetoTrabalhador.service.exceptions.ResourceNotFoundException;
 
@@ -41,13 +42,20 @@ public class WorkerService implements UserDetailsService{
 		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
-	public Worker insert(Worker obj, long id) {
+	public Worker insert(WorkerPostRequestBody workerPostRequestBody, long id) {
 		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-		obj.setPassword(passwordEncoder.encode(obj.getPassword()));
-		Department depart = departmentRepository.findById(id).get();
-		obj.setDepartment(depart);	
 		
-		return repository.save(obj);
+		Worker worker = Worker.builder()
+		.name(workerPostRequestBody.getName())
+		.userName(workerPostRequestBody.getUserName())
+		.baseSalary(workerPostRequestBody.getBaseSalary())
+		.password(passwordEncoder.encode(workerPostRequestBody.getPassword()))
+		.authorities(workerPostRequestBody.getAuthorities())
+		.department(departmentRepository.findById(id).get())
+		.build();
+										
+		
+		return repository.save(worker);
 	}
 
 	public void delete(long id) {
@@ -59,22 +67,25 @@ public class WorkerService implements UserDetailsService{
 		}
 	}
 
-	public Worker update(Worker obj, long id) {
+	public void update(WorkerPutRequestBody workerPutRequestBody) {
+		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 		try {
-			Worker worker = repository.findById(id).get();
-			updateData(worker, obj);
-			return repository.save(worker);
-		} catch (NoSuchElementException e) {
+		Worker workerSaved = repository.findById(workerPutRequestBody.getId()).get();
+		
+		Worker worker = Worker.builder()
+		.id(workerSaved.getId())
+		.name(workerPutRequestBody.getName())
+		.userName(workerPutRequestBody.getUserName())
+		.baseSalary(workerPutRequestBody.getBaseSalary())
+		.password(passwordEncoder.encode(workerPutRequestBody.getPassword()))
+		.authorities(workerPutRequestBody.getAuthorities())
+		.build();
+		
+		repository.save(worker);
+		}catch (NoSuchElementException e) {
 			throw new DataBaseError(e.getMessage());
 		}
-	}
-
-	private void updateData(Worker worker, Worker obj) {
-		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-		worker.setName(obj.getName());
-		worker.setUserName(obj.getUsername());
-		worker.setBaseSalary(obj.getBaseSalary());
-		worker.setPassword(passwordEncoder.encode(obj.getPassword()));
+		
 	}
 
 	public double income(long id, int year, int month) {

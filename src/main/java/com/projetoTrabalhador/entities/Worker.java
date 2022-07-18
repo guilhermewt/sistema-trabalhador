@@ -21,15 +21,22 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "tb_worker")
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode(of= {"id","name"})
+@ToString
+@SuperBuilder
 public class Worker implements Serializable,UserDetails{
 	
 	private static final long serialVersionUID = 1L;
@@ -43,12 +50,25 @@ public class Worker implements Serializable,UserDetails{
 	private String password;
 	private String authorities;
 	
+
 	@ManyToOne
 	@JoinColumn(name = "department_id")
 	private Department department;
 	
 	@OneToMany(mappedBy="worker", cascade = CascadeType.ALL)
+	@Builder.Default
 	private Set<HourContract> contracts = new HashSet<>();
+	
+	public Worker(Long id, String name, String userName, Double baseSalary, String password, String authorities) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.userName = userName;
+		this.baseSalary = baseSalary;
+		this.password = password;
+		this.authorities = authorities;
+	}
+
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

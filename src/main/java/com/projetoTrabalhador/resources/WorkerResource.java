@@ -2,6 +2,7 @@ package com.projetoTrabalhador.resources;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.projetoTrabalhador.dto.CalculateContractTimeDTO;
 import com.projetoTrabalhador.entities.Worker;
+import com.projetoTrabalhador.requests.WorkerPostRequestBody;
+import com.projetoTrabalhador.requests.WorkerPutRequestBody;
 import com.projetoTrabalhador.service.WorkerService;
 
 import lombok.RequiredArgsConstructor;
@@ -41,8 +44,8 @@ public class WorkerResource {
 	}
 	
 	@RequestMapping(value="/admin/{id}",method = RequestMethod.POST)
-	public ResponseEntity<Worker> insert(@RequestBody Worker obj,@PathVariable long id){
-		Worker worker = service.insert(obj, id);
+	public ResponseEntity<Worker> insert(@RequestBody WorkerPostRequestBody workerPostRequestBody,@PathVariable long id){
+		Worker worker = service.insert(workerPostRequestBody, id);
 		return ResponseEntity.ok().body(worker);
 	}
 	
@@ -53,9 +56,9 @@ public class WorkerResource {
 	}
 	
 	@RequestMapping(value="/admin/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Worker> update(@RequestBody Worker obj, @PathVariable long id){
-	    Worker worker = service.update(obj, id);
-	    return ResponseEntity.ok().body(worker);
+	public ResponseEntity<Worker> update(@RequestBody WorkerPutRequestBody workerPutRequestBody){
+	    service.update(workerPutRequestBody);
+	    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
 	@RequestMapping(value = "/admin/{id}/searchContracts", method = RequestMethod.GET)

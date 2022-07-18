@@ -32,15 +32,17 @@ public class configuration implements CommandLineRunner{
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 		
-		Department dep1 = new Department(null,"Design",null);
-		Department dep2 = new Department(null,"financeiro",null);
-		Department dep3 = new Department(null,"administrativo",null);
+		Department dep1 = new Department(null,"Design");
+		Department dep2 = new Department(null,"financeiro");
+		Department dep3 = new Department(null,"administrativo");
 		
 		departmentRepository.saveAll(Arrays.asList(dep1,dep2,dep3));
 		
-		Worker worker = new Worker(null,"guilherme henrique","guilherme",1200.0,"{bcrypt}$2a$10$kVStg9UcqLzpufBXvWsJ0uZmI6yuRtFo6/mFedY3w5bTb90VwjfuS","ROLE_ADMIN,ROLE_USER",dep1,null);
-		Worker worker2 = new Worker(null,"trabalhador","trabalhador",3200.0,"{bcrypt}$2a$10$kVStg9UcqLzpufBXvWsJ0uZmI6yuRtFo6/mFedY3w5bTb90VwjfuS","ROLE_USER",dep1,null);
-//		Worker worker2 = new Worker(null,"pedro castro",null,5000.0,null,dep2);
+		Worker worker = new Worker(null,"guilherme henrique","guilherme",1200.0,"{bcrypt}$2a$10$kVStg9UcqLzpufBXvWsJ0uZmI6yuRtFo6/mFedY3w5bTb90VwjfuS","ROLE_ADMIN,ROLE_USER");
+		Worker worker2 = new Worker(null,"trabalhador","trabalhador",3200.0,"{bcrypt}$2a$10$kVStg9UcqLzpufBXvWsJ0uZmI6yuRtFo6/mFedY3w5bTb90VwjfuS","ROLE_USER");
+        worker.setDepartment(dep1);
+		worker2.setDepartment(dep1);
+        //		Worker worker2 = new Worker(null,"pedro castro",null,5000.0,null,dep2);
 //		Worker worker3 = new Worker(null,"fernando canesin",1500.0,dep1);
 		
 //		workerRepository.saveAll(Arrays.asList(worker,worker2,worker3));

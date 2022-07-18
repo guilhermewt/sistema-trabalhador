@@ -32,6 +32,7 @@ public class DepartmentService {
 
 	
 	public Department insert(DepartmentPostRequestBody departmentPostRequestBody) {
+		
 		return repository.save(DepartmentMapper.INSTANCE.toDepartment(departmentPostRequestBody));
 	}
 
@@ -43,7 +44,7 @@ public class DepartmentService {
 
 	
 	public void update(DepartmentPutRequestBody departmentPutRequestBody) {
-		
+	
 		Department savedDepartment = findByIdOrThrowResourceNotFoundException(departmentPutRequestBody.getId());
 		Department department = DepartmentMapper.INSTANCE.toDepartment(departmentPutRequestBody);
 		department.setId(savedDepartment.getId());
