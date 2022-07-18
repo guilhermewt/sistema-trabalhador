@@ -55,7 +55,7 @@ public class WorkerResource {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@RequestMapping(value="/admin/{id}", method = RequestMethod.PUT)
+	@RequestMapping(value="/admin/", method = RequestMethod.PUT)
 	public ResponseEntity<Worker> update(@RequestBody WorkerPutRequestBody workerPutRequestBody){
 	    service.update(workerPutRequestBody);
 	    return new ResponseEntity<>(HttpStatus.NO_CONTENT);

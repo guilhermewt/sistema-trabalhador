@@ -22,20 +22,16 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Builder;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "tb_worker")
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 @EqualsAndHashCode(of= {"id","name"})
-@ToString
 @SuperBuilder
 public class Worker implements Serializable,UserDetails{
 	
@@ -86,10 +82,6 @@ public class Worker implements Serializable,UserDetails{
 	public String getUsername() {
 		return this.userName;
 	}	
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
 
 	@Override
 	public boolean isAccountNonExpired() {

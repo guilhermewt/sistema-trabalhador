@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.projetoTrabalhador.entities.HourContract;
 import com.projetoTrabalhador.entities.Worker;
+import com.projetoTrabalhador.mapper.WorkerMapper;
 import com.projetoTrabalhador.repository.DepartmentRepository;
 import com.projetoTrabalhador.repository.WorkerRepository;
 import com.projetoTrabalhador.requests.WorkerPostRequestBody;
@@ -44,18 +45,10 @@ public class WorkerService implements UserDetailsService{
 
 	public Worker insert(WorkerPostRequestBody workerPostRequestBody, long id) {
 		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-		
-		Worker worker = Worker.builder()
-		.name(workerPostRequestBody.getName())
-		.userName(workerPostRequestBody.getUserName())
-		.baseSalary(workerPostRequestBody.getBaseSalary())
-		.password(passwordEncoder.encode(workerPostRequestBody.getPassword()))
-		.authorities(workerPostRequestBody.getAuthorities())
-		.department(departmentRepository.findById(id).get())
-		.build();
+		workerPostRequestBody.setPassword(passwordEncoder.encode(workerPostRequestBody.getPassword()));
+		workerPostRequestBody.setDepartment(departmentRepository.findById(id).get());
 										
-		
-		return repository.save(worker);
+		return repository.save(WorkerMapper.INSTANCE.toWorker(workerPostRequestBody));
 	}
 
 	public void delete(long id) {
@@ -70,16 +63,11 @@ public class WorkerService implements UserDetailsService{
 	public void update(WorkerPutRequestBody workerPutRequestBody) {
 		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 		try {
-		Worker workerSaved = repository.findById(workerPutRequestBody.getId()).get();
+		Worker worker = WorkerMapper.INSTANCE.toWorker(workerPutRequestBody);
 		
-		Worker worker = Worker.builder()
-		.id(workerSaved.getId())
-		.name(workerPutRequestBody.getName())
-		.userName(workerPutRequestBody.getUserName())
-		.baseSalary(workerPutRequestBody.getBaseSalary())
-		.password(passwordEncoder.encode(workerPutRequestBody.getPassword()))
-		.authorities(workerPutRequestBody.getAuthorities())
-		.build();
+		Worker workerSaved = repository.findById(workerPutRequestBody.getId()).get();
+		worker.setId(workerSaved.getId());
+		worker.setPassword(passwordEncoder.encode(workerPutRequestBody.getPassword()));
 		
 		repository.save(worker);
 		}catch (NoSuchElementException e) {
