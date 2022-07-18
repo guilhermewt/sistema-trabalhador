@@ -19,8 +19,8 @@ import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "tb_hourContract")
-@Data
 @NoArgsConstructor
+@Data
 @SuperBuilder
 public class HourContract implements Serializable{
 	

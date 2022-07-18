@@ -15,4 +15,5 @@ public abstract class WorkerMapper {
 	public abstract Worker toWorker(WorkerPostRequestBody workerPostRequestBody);
 	
 	public abstract Worker toWorker(WorkerPutRequestBody workerPutRequestBody);
+	
 }

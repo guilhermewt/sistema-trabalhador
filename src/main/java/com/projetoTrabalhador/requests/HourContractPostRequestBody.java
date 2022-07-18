@@ -3,9 +3,6 @@ package com.projetoTrabalhador.requests;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.projetoTrabalhador.entities.Worker;
 
@@ -22,11 +19,10 @@ public class HourContractPostRequestBody implements Serializable{
 	private Double valuePerHour;
 	private Integer hour;
 
-	@ManyToOne
-	@JoinColumn(name = "worker_id")
+
 	private Worker worker;
 	
-	public HourContractPostRequestBody( Date date, Double valuePerHour, Integer hour) {
+	public HourContractPostRequestBody(Date date, Double valuePerHour, Integer hour) {
 		super();
 		this.date = date;
 		this.valuePerHour = valuePerHour;
