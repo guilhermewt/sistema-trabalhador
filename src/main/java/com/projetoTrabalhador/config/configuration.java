@@ -49,9 +49,13 @@ public class configuration implements CommandLineRunner{
 		workerRepository.saveAll(Arrays.asList(worker,worker2));
 		
 
-		HourContract contra1 = new HourContract(null, sdf.parse("2018/08/20"), 50.0, 20, worker);
-		HourContract contra2 = new HourContract(null, sdf.parse("2018/06/13"), 30.0, 18, worker);
-		HourContract contra3 = new HourContract(null, sdf.parse("2018/08/25"), 80.0, 10, worker);
+		HourContract contra1 = new HourContract(null, sdf.parse("2018/08/20"), 50.0, 20);
+		HourContract contra2 = new HourContract(null, sdf.parse("2018/06/13"), 30.0, 18);
+		HourContract contra3 = new HourContract(null, sdf.parse("2018/08/25"), 80.0, 10);
+		
+		contra1.setWorker(worker);
+		contra2.setWorker(worker);
+		contra3.setWorker(worker);		
 		
 		hourContractRepository.saveAll(Arrays.asList(contra1,contra2,contra3));
 		

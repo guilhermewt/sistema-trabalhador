@@ -8,9 +8,10 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.projetoTrabalhador.entities.HourContract;
-import com.projetoTrabalhador.entities.Worker;
 import com.projetoTrabalhador.repository.HourContractRepository;
 import com.projetoTrabalhador.repository.WorkerRepository;
+import com.projetoTrabalhador.requests.HourContractPostRequestBody;
+import com.projetoTrabalhador.requests.HourContractPutRequestBody;
 import com.projetoTrabalhador.service.exceptions.DataBaseError;
 import com.projetoTrabalhador.service.exceptions.ResourceNotFoundException;
 
@@ -33,10 +34,15 @@ public class HourContractService {
 		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
-	public HourContract insert(HourContract obj, long id) {
-		Worker worker = workerRepository.findById(id).get();
-		obj.setWorker(worker);
-		return repository.save(obj);
+	public void insert(HourContractPostRequestBody hourContractPostRequestBody, long id) {
+		HourContract hourContract = HourContract
+				.builder()
+				.date(hourContractPostRequestBody.getDate())
+				.valuePerHour(hourContractPostRequestBody.getValuePerHour())
+				.hour(hourContractPostRequestBody.getHour())
+				.worker(workerRepository.findById(id).get())
+				.build();
+		 repository.save(hourContract);
 	}
 
 	public void delete(Long id) {
@@ -48,20 +54,22 @@ public class HourContractService {
 
 	}
 
-	public HourContract update(HourContract obj, long id) {
+	public void update(HourContractPutRequestBody hourContractPutRequestBody) {
 		try {
-			HourContract hc = repository.findById(id).get();
-			updateData(hc, obj);
-			return repository.save(hc);
+			HourContract savedHourContract = repository.findById(hourContractPutRequestBody.getId()).get();
+			HourContract hourContract = HourContract
+					.builder()
+					.id(savedHourContract.getId())
+					.date(hourContractPutRequestBody.getDate())
+					.valuePerHour(hourContractPutRequestBody.getValuePerHour())
+					.hour(hourContractPutRequestBody.getHour())
+					.build();
+			repository.save(hourContract);
+			
 		} catch (NoSuchElementException e) {
 			throw new DataBaseError(e.getMessage());
 		}
 	}
 
-	private void updateData(HourContract hc, HourContract obj) {
-		hc.setDate(obj.getDate());
-		hc.setValuePerHour(obj.getValuePerHour());
-		hc.setHour(obj.getHour());
 
-	}
 }
