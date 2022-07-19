@@ -6,10 +6,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,45 +33,43 @@ public class WorkerResource {
 
 	private final WorkerService service;
 	 
-	@RequestMapping(value = "/admin")
+	@GetMapping(value = "/admin")
 	public ResponseEntity<List<Worker>> findAll(){
-		List<Worker> list = service.findAll();
-		return ResponseEntity.ok().body(list);
+		return ResponseEntity.ok(service.findAll());
 	}
 	
-	@RequestMapping(value = "/admin/{id}",method = RequestMethod.GET)
+	@GetMapping(value = "/admin/{id}")
 	public ResponseEntity<Worker> findById(@AuthenticationPrincipal UserDetails userDetails,  @PathVariable long id){
 		log.info(userDetails);
-		Worker obj = service.findById(id);
-	    return ResponseEntity.ok().body(obj);
+	    return ResponseEntity.ok(service.findByIdOrElseThrowResourceNotFoundException(id));
 	}
 	
-	@RequestMapping(value="/admin/{id}",method = RequestMethod.POST)
+	@PostMapping(value="/admin/{id}")
 	public ResponseEntity<Worker> insert(@RequestBody WorkerPostRequestBody workerPostRequestBody,@PathVariable long id){
-		Worker worker = service.insert(workerPostRequestBody, id);
-		return ResponseEntity.ok().body(worker);
+		service.insert(workerPostRequestBody, id);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
-	@RequestMapping(value="/admin/{id}", method = RequestMethod.DELETE)
+	@DeleteMapping(value="/admin/{id}")
 	public ResponseEntity<Void> delete(@PathVariable long id){
 		service.delete(id);
-		return ResponseEntity.noContent().build();
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-	
-	@RequestMapping(value="/admin/", method = RequestMethod.PUT)
+
+	@PutMapping(value="/admin/")
 	public ResponseEntity<Worker> update(@RequestBody WorkerPutRequestBody workerPutRequestBody){
 	    service.update(workerPutRequestBody);
 	    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
-	@RequestMapping(value = "/admin/{id}/searchContracts", method = RequestMethod.GET)
+	@GetMapping(value = "/admin/{id}/searchContracts")
 	public ResponseEntity<CalculateContractTimeDTO> calculateHourContract(@RequestParam(value="date",defaultValue="")String date, @PathVariable long id){
 		String montAndYear = date;
 		int month = Integer.parseInt(montAndYear.substring(0, 2));
 		int year = Integer.parseInt(montAndYear.substring(3));
 		
 		double baseSalary = service.income(id, year, month);
-		Worker obj = service.findById(id);
+		Worker obj = service.findByIdOrElseThrowResourceNotFoundException(id);
 		return ResponseEntity.ok().body(new CalculateContractTimeDTO(obj, baseSalary));
 	}
 

@@ -2,13 +2,15 @@ package com.projetoTrabalhador.resources;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projetoTrabalhador.entities.HourContract;
@@ -16,40 +18,39 @@ import com.projetoTrabalhador.requests.HourContractPostRequestBody;
 import com.projetoTrabalhador.requests.HourContractPutRequestBody;
 import com.projetoTrabalhador.service.HourContractService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping(value = "/contracts")
+@RequiredArgsConstructor
 public class HourContractResource {
 
-	@Autowired
-	private HourContractService service;
+	private final HourContractService service;
 	
-	@RequestMapping
+	@GetMapping
 	public ResponseEntity<List<HourContract>> findAll(){
-		
-		List<HourContract> list = service.findAll();
-		return ResponseEntity.ok().body(list);
+		return ResponseEntity.ok(service.findAll());
 	}
 	
-	@RequestMapping(value = "/{id}",method = RequestMethod.GET)
+	@GetMapping(value = "/{id}")
 	public ResponseEntity<HourContract> findById(@PathVariable long id){
-		HourContract obj = service.findById(id);
-	    return ResponseEntity.ok().body(obj);
+	    return ResponseEntity.ok(service.findByIdOrElseThrowResourceNotFoundException(id));
 	}
 	
 	
-	@RequestMapping(value="/{id}", method = RequestMethod.POST)
+	@PostMapping(value="/{id}")
 	public ResponseEntity<HourContract> insert(@RequestBody HourContractPostRequestBody hourContractPostRequestBody, @PathVariable long id){
 		service.insert(hourContractPostRequestBody, id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
-	@RequestMapping(value="/{id}", method = RequestMethod.DELETE)
+	@DeleteMapping(value="/{id}")
 	public ResponseEntity<Void> delete(@PathVariable long id){
 		service.delete(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
-	@RequestMapping(method = RequestMethod.PUT)
+	@PutMapping
 	public ResponseEntity<HourContract> update(@RequestBody HourContractPutRequestBody hourContractPutRequestBody){
 		 service.update(hourContractPutRequestBody);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);

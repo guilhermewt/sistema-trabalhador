@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,8 +29,8 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class WorkerService implements UserDetailsService{
-	
+public class WorkerService implements UserDetailsService {
+
 	private final WorkerRepository repository;
 
 	private final DepartmentRepository departmentRepository;
@@ -38,17 +39,16 @@ public class WorkerService implements UserDetailsService{
 		return repository.findAll();
 	}
 
-	public Worker findById(long id) {
-		Optional<Worker> obj = repository.findById(id);
-		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
+	public Worker findByIdOrElseThrowResourceNotFoundException(long id) {
+		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
-	public Worker insert(WorkerPostRequestBody workerPostRequestBody, long id) {
+	public void insert(WorkerPostRequestBody workerPostRequestBody, long id) {
 		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 		workerPostRequestBody.setPassword(passwordEncoder.encode(workerPostRequestBody.getPassword()));
 		workerPostRequestBody.setDepartment(departmentRepository.findById(id).get());
-										
-		return repository.save(WorkerMapper.INSTANCE.toWorker(workerPostRequestBody));
+
+		repository.save(WorkerMapper.INSTANCE.toWorker(workerPostRequestBody));
 	}
 
 	public void delete(long id) {
@@ -57,23 +57,25 @@ public class WorkerService implements UserDetailsService{
 			repository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
 			throw new DataBaseError(e.getMessage());
+		} catch (ConstraintViolationException e) {
+			throw new DataBaseError(e.getMessage());
 		}
 	}
 
 	public void update(WorkerPutRequestBody workerPutRequestBody) {
 		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 		try {
-		Worker worker = WorkerMapper.INSTANCE.toWorker(workerPutRequestBody);
-		
-		Worker workerSaved = repository.findById(workerPutRequestBody.getId()).get();
-		worker.setId(workerSaved.getId());
-		worker.setPassword(passwordEncoder.encode(workerPutRequestBody.getPassword()));
-		
-		repository.save(worker);
-		}catch (NoSuchElementException e) {
+			Worker worker = WorkerMapper.INSTANCE.toWorker(workerPutRequestBody);
+
+			Worker workerSaved = repository.findById(workerPutRequestBody.getId()).get();
+			worker.setId(workerSaved.getId());
+			worker.setPassword(passwordEncoder.encode(workerPutRequestBody.getPassword()));
+
+			repository.save(worker);
+		} catch (NoSuchElementException e) {
 			throw new DataBaseError(e.getMessage());
 		}
-		
+
 	}
 
 	public double income(long id, int year, int month) {
@@ -97,7 +99,7 @@ public class WorkerService implements UserDetailsService{
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username){
+	public UserDetails loadUserByUsername(String username) {
 		return Optional.ofNullable(repository.findByuserName(username))
 				.orElseThrow(() -> new UsernameNotFoundException("worker user not found"));
 	}
