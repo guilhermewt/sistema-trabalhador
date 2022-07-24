@@ -17,36 +17,32 @@ import lombok.extern.log4j.Log4j2;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 @Log4j2
-public class SecurityConfig extends WebSecurityConfigurerAdapter{
-	
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
 	private final WorkerService workerService;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable()
-		//.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()
-		.authorizeRequests()
-		.antMatchers("/workers/admin/**").hasRole("ADMIN")
-		.antMatchers("/workers/**").hasRole("USER")
-		.anyRequest()
-		.authenticated()
-		.and()
-		.httpBasic();
+				// .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()
+				.authorizeRequests()
+				.antMatchers("/workers/admin/**").hasRole("ADMIN")
+				.antMatchers("/workers/**").hasRole("USER")
+				.antMatchers("/departments/**").hasRole("USER")
+				.antMatchers("/contracts/**").hasRole("USER")
+				.anyRequest()
+				.authenticated().and()
+				.httpBasic();
 	}
-	
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-		log.info("password Encoder {}",passwordEncoder.encode("trabalhador"));
-		auth.inMemoryAuthentication()
-		.withUser("guilherme2")
-		.password(passwordEncoder.encode("trabalhador"))
-		.roles("USER","ADMIN")
-		.and()
-		.withUser("trabalhador2")
-		.password(passwordEncoder.encode("trabalhador"))
-		.roles("USER");
-		
+		log.info("password Encoder {}", passwordEncoder.encode("trabalhador"));
+		auth.inMemoryAuthentication().withUser("guilherme2").password(passwordEncoder.encode("trabalhador"))
+				.roles("USER", "ADMIN").and().withUser("trabalhador2").password(passwordEncoder.encode("trabalhador"))
+				.roles("USER");
+
 		auth.userDetailsService(workerService).passwordEncoder(passwordEncoder);
 	}
 }
