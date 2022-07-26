@@ -29,6 +29,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(of= {"id","name"})
 @ToString
 @SuperBuilder
+
 public class Department implements Serializable{
 	
 	private static final long serialVersionUID = 1L;

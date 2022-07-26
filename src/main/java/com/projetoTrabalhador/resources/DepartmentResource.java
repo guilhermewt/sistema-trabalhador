@@ -2,6 +2,8 @@ package com.projetoTrabalhador.resources;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,7 +40,7 @@ public class DepartmentResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Department> insert(@RequestBody DepartmentPostRequestBody departmentPostRequestBody){
+	public ResponseEntity<Department> insert(@RequestBody @Valid DepartmentPostRequestBody departmentPostRequestBody){
 		return ResponseEntity.ok().body(service.insert(departmentPostRequestBody));
 	}
 	

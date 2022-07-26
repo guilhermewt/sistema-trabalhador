@@ -2,6 +2,8 @@ package com.projetoTrabalhador.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import com.projetoTrabalhador.entities.Department;
@@ -30,7 +32,7 @@ public class DepartmentService {
 		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
-	
+	@Transactional
 	public Department insert(DepartmentPostRequestBody departmentPostRequestBody) {
 		
 		return repository.save(DepartmentMapper.INSTANCE.toDepartment(departmentPostRequestBody));

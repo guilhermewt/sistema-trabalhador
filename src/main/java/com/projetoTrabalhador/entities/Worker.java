@@ -45,7 +45,6 @@ public class Worker implements Serializable,UserDetails{
 	private Double baseSalary;
 	private String password;
 	private String authorities;
-	
 
 	@ManyToOne
 	@JoinColumn(name = "department_id")
