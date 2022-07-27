@@ -8,4 +8,6 @@ import lombok.Data;
 public class DepartmentPostRequestBody {
 	@NotEmpty(message = "the department name cannot be empty")
 	private String name;
+	@NotEmpty(message = "the department url cannot be empty")
+	private String url;
 }
