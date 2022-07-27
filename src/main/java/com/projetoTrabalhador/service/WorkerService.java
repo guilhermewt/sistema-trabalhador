@@ -22,8 +22,7 @@ import com.projetoTrabalhador.repository.DepartmentRepository;
 import com.projetoTrabalhador.repository.WorkerRepository;
 import com.projetoTrabalhador.requests.WorkerPostRequestBody;
 import com.projetoTrabalhador.requests.WorkerPutRequestBody;
-import com.projetoTrabalhador.service.exceptions.DataBaseError;
-import com.projetoTrabalhador.service.exceptions.ResourceNotFoundException;
+import com.projetoTrabalhador.service.exceptions.BadRequestException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -40,7 +39,7 @@ public class WorkerService implements UserDetailsService {
 	}
 
 	public Worker findByIdOrElseThrowResourceNotFoundException(long id) {
-		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+		return repository.findById(id).orElseThrow(() -> new BadRequestException("worker not found"));
 	}
 
 	public void insert(WorkerPostRequestBody workerPostRequestBody, long id) {
@@ -56,9 +55,9 @@ public class WorkerService implements UserDetailsService {
 		try {
 			repository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
-			throw new DataBaseError(e.getMessage());
+			throw new BadRequestException(e.getMessage());
 		} catch (ConstraintViolationException e) {
-			throw new DataBaseError(e.getMessage());
+			throw new BadRequestException(e.getMessage());
 		}
 	}
 
@@ -73,7 +72,7 @@ public class WorkerService implements UserDetailsService {
 
 			repository.save(worker);
 		} catch (NoSuchElementException e) {
-			throw new DataBaseError(e.getMessage());
+			throw new BadRequestException(e.getMessage());
 		}
 
 	}

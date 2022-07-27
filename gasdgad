@@ -1,0 +1,21 @@
+[33m5479601[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m adicionado transactional e validacao no department
+[33m21a55e9[m adicionado o antmatcher para department e hourContracts
+[33m0f7f5d8[m refatorando codigos
+[33m3a85928[m colocado mapstruct no hourContract
+[33m2295dc9[m dtos do HourContract
+[33m14db238[m usando mapstruct no worker
+[33m6b85408[m tesssts
+[33m8865da2[m simplificando Dtos com mapstruct
+[33m5a994f3[m adicionando metodos que se parece dtos e adicionado mapstruct nas dependencias
+[33m1d5a409[m adicionado o lombok
+[33m08028f6[m Proteção de URL com Antmatcher
+[33m8ee67ff[m Autenticação com usuário no banco de dados
+[33m287044e[m spring security,autenticacoes, csrf token, preAuthori
+[33mf49aeb1[m department: delete, update, findById, insert
+[33m1feb046[m exception: (worker, hourContract) delete, update,
+[33ma8f9060[m exception findById not found
+[33m3dcb9e4[m criado os method delete,update de workers e dos contratos
+[33m8381fed[m worker insert method, hourContract insert method
+[33m5b155ef[m construido a logica da soma dos contratos
+[33m7136e29[m  criado a entidade (Department) e associado ela a worker e povoado o banco pelo confi
+[33mdc710c0[m criado projeto, h2 database, entidade worker

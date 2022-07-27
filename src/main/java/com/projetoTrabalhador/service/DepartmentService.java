@@ -11,7 +11,7 @@ import com.projetoTrabalhador.mapper.DepartmentMapper;
 import com.projetoTrabalhador.repository.DepartmentRepository;
 import com.projetoTrabalhador.requests.DepartmentPostRequestBody;
 import com.projetoTrabalhador.requests.DepartmentPutRequestBody;
-import com.projetoTrabalhador.service.exceptions.ResourceNotFoundException;
+import com.projetoTrabalhador.service.exceptions.BadRequestException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,32 +21,27 @@ public class DepartmentService {
 	
 	private final DepartmentRepository repository;
 	
-	public List<Department> findAll(){
-		
+	public List<Department> findAll(){	
 		return repository.findAll();
 	}
 	
 	
-	public Department findByIdOrThrowResourceNotFoundException(long id) {
-		
-		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+	public Department findByIdOrThrowResourceNotFoundException(long id) {	
+		return repository.findById(id).orElseThrow(() -> new BadRequestException("department not found"));
 	}
 
 	@Transactional
-	public Department insert(DepartmentPostRequestBody departmentPostRequestBody) {
-		
+	public Department insert(DepartmentPostRequestBody departmentPostRequestBody) {	
 		return repository.save(DepartmentMapper.INSTANCE.toDepartment(departmentPostRequestBody));
 	}
 
 	
-	public void delete(long id) {
-		
+	public void delete(long id) {	
 		repository.delete(findByIdOrThrowResourceNotFoundException(id));
 	}
 
 	
-	public void update(DepartmentPutRequestBody departmentPutRequestBody) {
-	
+	public void update(DepartmentPutRequestBody departmentPutRequestBody) {	
 		Department savedDepartment = findByIdOrThrowResourceNotFoundException(departmentPutRequestBody.getId());
 		Department department = DepartmentMapper.INSTANCE.toDepartment(departmentPutRequestBody);
 		department.setId(savedDepartment.getId());

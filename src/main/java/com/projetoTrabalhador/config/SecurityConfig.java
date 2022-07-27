@@ -39,9 +39,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 		log.info("password Encoder {}", passwordEncoder.encode("trabalhador"));
-		auth.inMemoryAuthentication().withUser("guilherme2").password(passwordEncoder.encode("trabalhador"))
-				.roles("USER", "ADMIN").and().withUser("trabalhador2").password(passwordEncoder.encode("trabalhador"))
-				.roles("USER");
+		auth.inMemoryAuthentication()
+		.withUser("guilherme2")
+		.password(passwordEncoder.encode("trabalhador")).roles("USER", "ADMIN")
+		.and()
+		.withUser("trabalhador2")
+		.password(passwordEncoder.encode("trabalhador")).roles("USER");
 
 		auth.userDetailsService(workerService).passwordEncoder(passwordEncoder);
 	}

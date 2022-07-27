@@ -6,6 +6,6 @@ import lombok.Data;
 
 @Data
 public class DepartmentPostRequestBody {
-	@NotEmpty
+	@NotEmpty(message = "the department name cannot be empty")
 	private String name;
 }

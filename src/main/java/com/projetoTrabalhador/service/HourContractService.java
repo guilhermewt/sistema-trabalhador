@@ -12,8 +12,7 @@ import com.projetoTrabalhador.repository.HourContractRepository;
 import com.projetoTrabalhador.repository.WorkerRepository;
 import com.projetoTrabalhador.requests.HourContractPostRequestBody;
 import com.projetoTrabalhador.requests.HourContractPutRequestBody;
-import com.projetoTrabalhador.service.exceptions.DataBaseError;
-import com.projetoTrabalhador.service.exceptions.ResourceNotFoundException;
+import com.projetoTrabalhador.service.exceptions.BadRequestException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,7 +29,7 @@ public class HourContractService {
 	}
 
 	public HourContract findByIdOrElseThrowResourceNotFoundException(long id) {
-		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+		return repository.findById(id).orElseThrow(() -> new BadRequestException("hour contract not found"));
 	}
 
 	public void insert(HourContractPostRequestBody hourContractPostRequestBody, long id) {
@@ -45,7 +44,7 @@ public class HourContractService {
 			repository.delete(findByIdOrElseThrowResourceNotFoundException(id));
 		} 
 		catch (ConstraintViolationException e) {
-			throw new DataBaseError(e.getMessage());
+			throw new BadRequestException(e.getMessage());
 		}
 	}
 
@@ -58,7 +57,7 @@ public class HourContractService {
 			repository.save(contract);
 
 		} catch (NoSuchElementException e) {
-			throw new DataBaseError(e.getMessage());
+			throw new BadRequestException(e.getMessage());
 		}
 	}
 
