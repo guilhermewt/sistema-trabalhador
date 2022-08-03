@@ -17,7 +17,7 @@ public class DepartmentRepositoryTest {
 	
 	@Test
 	@DisplayName("save creater Department when successful")
-	void test(){
+	void save_persistDeparment_whenSuccessful(){
 		Department departmentToBeSaved = createDepartment();
 		Department departmentSaved = this.departmentRepository.save(departmentToBeSaved);
 		Assertions.assertThat(departmentSaved).isNotNull();
