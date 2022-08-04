@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projetoTrabalhador.entities.Department;
@@ -31,7 +32,12 @@ public class DepartmentResource {
 	
 	@GetMapping
 	public ResponseEntity<List<Department>> findAll(){
-		return ResponseEntity.ok().body(service.findAll());
+		return ResponseEntity.ok(service.findAll());
+	}
+	
+	@GetMapping(value = "/find")
+	public ResponseEntity<List<Department>> findByName(@RequestParam String name){
+		return ResponseEntity.ok(service.findByName(name));
 	}
 	
 	@GetMapping(value = "/{id}")

@@ -25,6 +25,10 @@ public class DepartmentService {
 		return repository.findAll();
 	}
 	
+	public List<Department> findByName(String name){	
+		return repository.findByNameContainingIgnoreCase(name);
+	}
+	
 	
 	public Department findByIdOrThrowResourceNotFoundException(long id) {	
 		return repository.findById(id).orElseThrow(() -> new BadRequestException("department not found"));
