@@ -2,6 +2,7 @@ package com.projetoTrabalhador.repository;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -32,6 +33,34 @@ public class HourContractRepositoryTest {
 		Assertions.assertThat(savedContract.getHour()).isEqualTo(hourContract.getHour());
 		Assertions.assertThat(savedContract.getValuePerHour()).isEqualTo(hourContract.getValuePerHour());
 		
+	}
+	
+	@Test
+	@DisplayName("save update HourContract when successful")
+	void save_updateHourContract_whenSuccessful() {
+		HourContract hourContractToBeSaved = createHourContract();
+		HourContract hourContractSaved = this.hourContractRepository.save(hourContractToBeSaved);
+		
+		hourContractSaved.setValuePerHour(70.0);
+	    
+		HourContract hourContractUpdate = this.hourContractRepository.save(hourContractSaved);
+		
+		Assertions.assertThat(hourContractUpdate).isNotNull();
+		Assertions.assertThat(hourContractUpdate.getId()).isNotNull();
+		Assertions.assertThat(hourContractUpdate.getValuePerHour()).isEqualTo(hourContractSaved.getValuePerHour());
+	}
+	
+	@Test
+	@DisplayName("delete removes hourContract when successfull")
+	void delete_removesHourContract_whenSuccessful() {
+		HourContract hourContractToBeSaved = createHourContract();
+		HourContract hourContractSaved = this.hourContractRepository.save(hourContractToBeSaved);
+		
+		hourContractRepository.delete(hourContractSaved);
+		
+	    Optional<HourContract> hourContract = this.hourContractRepository.findById(hourContractSaved.getId());
+	    
+	    Assertions.assertThat(hourContract).isEmpty();
 	}
 	
 	private HourContract createHourContract(){

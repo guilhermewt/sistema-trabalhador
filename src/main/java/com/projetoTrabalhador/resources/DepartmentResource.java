@@ -30,6 +30,7 @@ public class DepartmentResource {
 
 	private final DepartmentService service;
 	
+	
 	@GetMapping
 	public ResponseEntity<List<Department>> findAll(){
 		return ResponseEntity.ok(service.findAll());
