@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -29,7 +30,6 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(of= {"id","name"})
 @ToString
 @SuperBuilder
-
 public class Department implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -37,10 +37,10 @@ public class Department implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@NotEmpty(message = "the department name cannot be empty")
 	private String name;
 
-	
-	
 	@OneToMany(mappedBy = "department")
 	@Builder.Default
 	private Set<Worker> worker = new HashSet<>();

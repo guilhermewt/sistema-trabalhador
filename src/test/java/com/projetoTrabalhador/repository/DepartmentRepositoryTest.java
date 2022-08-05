@@ -3,6 +3,8 @@ package com.projetoTrabalhador.repository;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.ConstraintViolationException;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +19,7 @@ public class DepartmentRepositoryTest {
 	
 	@Autowired
 	private DepartmentRepository departmentRepository;
+	
 	
 	@Test
 	@DisplayName("save persist Department when successful")
@@ -83,6 +86,20 @@ public class DepartmentRepositoryTest {
 	void findByName_ReturnsEmptyListOfDepartment() {
 		List<Department> departments = this.departmentRepository.findByNameContainingIgnoreCase("goru");
 		Assertions.assertThat(departments).isEmpty();
+	}
+	
+	@Test
+	@DisplayName("save ThrowConstraintViolationException when Department is empty")
+	void save_ThrowsConstraintViolationException_whenNameIsEmpty(){
+		Department department = new Department();
+		
+//		Assertions.assertThatThrownBy(() -> this.departmentRepository.save(department))
+//		.isInstanceOf(ConstraintViolationException.class);
+		
+		Assertions.assertThatExceptionOfType(ConstraintViolationException.class)
+		                   .isThrownBy(() -> this.departmentRepository.save(department))
+		                   .withMessageContaining("the department name cannot be empty");
+		
 	}
 	
 	private Department createDepartment() {
