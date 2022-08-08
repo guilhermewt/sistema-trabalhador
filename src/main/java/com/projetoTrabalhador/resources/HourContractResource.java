@@ -2,6 +2,8 @@ package com.projetoTrabalhador.resources;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,7 +41,7 @@ public class HourContractResource {
 	
 	
 	@PostMapping(value="/{id}")
-	public ResponseEntity<HourContract> insert(@RequestBody HourContractPostRequestBody hourContractPostRequestBody, @PathVariable long id){
+	public ResponseEntity<HourContract> insert(@RequestBody @Valid HourContractPostRequestBody hourContractPostRequestBody, @PathVariable long id){
 		service.insert(hourContractPostRequestBody, id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}

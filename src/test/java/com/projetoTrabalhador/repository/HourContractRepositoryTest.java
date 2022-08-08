@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Optional;
 
+import javax.validation.ConstraintViolationException;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -61,6 +63,18 @@ public class HourContractRepositoryTest {
 	    Optional<HourContract> hourContract = this.hourContractRepository.findById(hourContractSaved.getId());
 	    
 	    Assertions.assertThat(hourContract).isEmpty();
+	}
+	
+	@Test
+	@DisplayName("save throw ConstrationViolationException when hourContract is empty")
+	void save_ThrowConstrationViolation_WhenNameIsEmpty() {
+		HourContract contract = new HourContract();
+//		Assertions.assertThatThrownBy(() -> this.hourContractRepository.save(contract))
+//		.isInstanceOf(ConstraintViolationException.class);
+		
+		Assertions.assertThatExceptionOfType(ConstraintViolationException.class)
+		  .isThrownBy(() -> this.hourContractRepository.save(contract));
+		//nao conseguir pois a constraint...ex nao tem para tipo data
 	}
 	
 	private HourContract createHourContract(){

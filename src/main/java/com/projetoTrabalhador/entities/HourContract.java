@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -29,8 +30,14 @@ public class HourContract implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+    @NotNull(message = "the HourContract date cannot cannot be empty")
 	private Date date;
+	
+	@NotNull(message = "the HourContract valuePerHour cannot be empty")
 	private Double valuePerHour;
+	
+	@NotNull(message = "the HourContract hour cannot be empty")
 	private Integer hour;
 	
 	@ManyToOne
