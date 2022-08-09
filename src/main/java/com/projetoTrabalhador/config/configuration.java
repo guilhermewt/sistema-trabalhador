@@ -35,8 +35,25 @@ public class configuration implements CommandLineRunner{
 		Department dep1 = new Department(null,"Design");
 		Department dep2 = new Department(null,"financeiro");
 		Department dep3 = new Department(null,"administrativo");
+		Department dep4 = new Department(null,"Design");
+		Department dep5 = new Department(null,"financeiro");
+		Department dep6 = new Department(null,"administrativo");
+		Department dep7 = new Department(null,"Design");
+		Department dep8 = new Department(null,"financeiro");
+		Department dep9 = new Department(null,"administrativo");
+		Department dep10 = new Department(null,"Design");
+		Department dep11 = new Department(null,"financeiro");
+		Department dep12 = new Department(null,"administrativo");
+		Department dep13 = new Department(null,"Design");
+		Department dep14 = new Department(null,"financeiro");
+		Department dep15 = new Department(null,"administrativo");
+		Department dep16 = new Department(null,"Design");
+		Department dep17 = new Department(null,"financeiro");
+		Department dep18 = new Department(null,"administrativo");
+		Department dep19 = new Department(null,"financeiro");
+		Department dep20 = new Department(null,"administrativo");
 		
-		departmentRepository.saveAll(Arrays.asList(dep1,dep2,dep3));
+		departmentRepository.saveAll(Arrays.asList(dep1,dep2,dep3,dep4,dep5,dep6,dep7,dep8,dep9,dep10,dep11,dep12,dep13,dep14,dep15,dep16,dep17,dep18,dep19,dep20));
 		
 		Worker worker = new Worker(null,"guilherme henrique","guilherme",1200.0,"{bcrypt}$2a$10$kVStg9UcqLzpufBXvWsJ0uZmI6yuRtFo6/mFedY3w5bTb90VwjfuS","ROLE_ADMIN,ROLE_USER");
 		Worker worker2 = new Worker(null,"trabalhador","trabalhador",3200.0,"{bcrypt}$2a$10$kVStg9UcqLzpufBXvWsJ0uZmI6yuRtFo6/mFedY3w5bTb90VwjfuS","ROLE_USER");

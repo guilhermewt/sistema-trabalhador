@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.projetoTrabalhador.entities.Department;
@@ -21,8 +23,8 @@ public class DepartmentService {
 	
 	private final DepartmentRepository repository;
 	
-	public List<Department> findAll(){	
-		return repository.findAll();
+	public Page<Department> findAll(Pageable pageable){	
+		return repository.findAll(pageable);
 	}
 	
 	public List<Department> findByName(String name){	

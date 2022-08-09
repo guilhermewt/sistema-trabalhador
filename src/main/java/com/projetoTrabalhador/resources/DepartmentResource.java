@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,8 +34,8 @@ public class DepartmentResource {
 	
 	
 	@GetMapping
-	public ResponseEntity<List<Department>> findAll(){
-		return ResponseEntity.ok(service.findAll());
+	public ResponseEntity<Page<Department>> findAll(Pageable pageable){
+		return ResponseEntity.ok(service.findAll(pageable));
 	}
 	
 	@GetMapping(value = "/find")

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.projetoTrabalhador.entities.Department;
+import com.projetoTrabalhador.util.DepartmentCreator;
 
 @DataJpaTest
 @DisplayName("test for department repository")
@@ -24,7 +25,7 @@ public class DepartmentRepositoryTest {
 	@Test
 	@DisplayName("save persist Department when successful")
 	void save_persistDeparment_whenSuccessful(){
-		Department departmentToBeSaved = createDepartment();
+		Department departmentToBeSaved = DepartmentCreator.createDepartmentToBeSaved();
 		
 		Department departmentSaved = this.departmentRepository.save(departmentToBeSaved);
 		
@@ -38,7 +39,7 @@ public class DepartmentRepositoryTest {
 	@Test
 	@DisplayName("update Department when successful")
 	void save_updateDeparment_whenSuccessful(){
-		Department departmentToBeSaved = createDepartment();
+		Department departmentToBeSaved = DepartmentCreator.createDepartmentToBeSaved();
 		
 		Department departmentSaved = this.departmentRepository.save(departmentToBeSaved);
 		
@@ -56,7 +57,7 @@ public class DepartmentRepositoryTest {
 	@Test
 	@DisplayName("delete removes Department when successful")
 	void delete_removesDeparment_whenSuccessful(){
-		Department departmentToBeSaved = createDepartment();
+		Department departmentToBeSaved = DepartmentCreator.createDepartmentToBeSaved();
 		
 		Department departmentSaved = this.departmentRepository.save(departmentToBeSaved);
 		
@@ -70,7 +71,7 @@ public class DepartmentRepositoryTest {
 	@Test
 	@DisplayName("find by name Return list of anime whenSuccessful")
 	void findByName_ReturnsListOfDepartment_WhenSuccessful() {
-		Department departmentToBeSaved = createDepartment();
+		Department departmentToBeSaved = DepartmentCreator.createDepartmentToBeSaved();
 		Department departmentSaved = this.departmentRepository.save(departmentToBeSaved);
 		
 		String name = departmentSaved.getName();
@@ -100,10 +101,6 @@ public class DepartmentRepositoryTest {
 		                   .isThrownBy(() -> this.departmentRepository.save(department))
 		                   .withMessageContaining("the department name cannot be empty");
 		
-	}
-	
-	private Department createDepartment() {
-		return Department.builder().name("informatica").build();
 	}
 
 }
