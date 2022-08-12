@@ -27,6 +27,10 @@ public class DepartmentService {
 		return repository.findAll(pageable);
 	}
 	
+	public List<Department> listAllNonPageable(){
+		return repository.findAll();
+	}
+	
 	public List<Department> findByName(String name){	
 		return repository.findByNameContainingIgnoreCase(name);
 	}

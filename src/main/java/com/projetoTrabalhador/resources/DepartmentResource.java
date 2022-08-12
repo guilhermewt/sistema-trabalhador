@@ -38,6 +38,11 @@ public class DepartmentResource {
 		return ResponseEntity.ok(service.findAll(pageable));
 	}
 	
+	@GetMapping(path = "/all")
+	public ResponseEntity<List<Department>> listAll(){
+		return ResponseEntity.ok(service.listAllNonPageable());
+	}
+	
 	@GetMapping(value = "/find")
 	public ResponseEntity<List<Department>> findByName(@RequestParam String name){
 		return ResponseEntity.ok(service.findByName(name));
@@ -60,7 +65,7 @@ public class DepartmentResource {
 	}
 	
 	@PutMapping
-	public ResponseEntity<Department> update(@RequestBody DepartmentPutRequestBody departmentPutRequestBody){
+	public ResponseEntity<Void> update(@RequestBody DepartmentPutRequestBody departmentPutRequestBody){
 	    service.update(departmentPutRequestBody);
 	    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
