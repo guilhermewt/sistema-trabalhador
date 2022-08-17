@@ -8,9 +8,11 @@ import com.projetoTrabalhador.entities.Worker;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @NoArgsConstructor
+@SuperBuilder
 public class HourContractPostRequestBody implements Serializable{
 	
 	private static final long serialVersionUID = 1L;

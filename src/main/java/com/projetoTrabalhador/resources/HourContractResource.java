@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,9 +31,14 @@ public class HourContractResource {
 
 	private final HourContractService service;
 	
+	@GetMapping(value = "/find")
+	public ResponseEntity<Page<HourContract>> findAll(Pageable pageable){
+		return ResponseEntity.ok(service.findAll(pageable));
+	}
+	
 	@GetMapping
-	public ResponseEntity<List<HourContract>> findAll(){
-		return ResponseEntity.ok(service.findAll());
+	public ResponseEntity<List<HourContract>> findAllNonPageable(){
+		return ResponseEntity.ok(service.findAllNonPageable());
 	}
 	
 	@GetMapping(value = "/{id}")
@@ -42,8 +49,7 @@ public class HourContractResource {
 	
 	@PostMapping(value="/{id}")
 	public ResponseEntity<HourContract> insert(@RequestBody @Valid HourContractPostRequestBody hourContractPostRequestBody, @PathVariable long id){
-		service.insert(hourContractPostRequestBody, id);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<HourContract>(service.insert(hourContractPostRequestBody, id), HttpStatus.NO_CONTENT);
 	}
 	
 	@DeleteMapping(value="/{id}")
@@ -53,7 +59,7 @@ public class HourContractResource {
 	}
 	
 	@PutMapping
-	public ResponseEntity<HourContract> update(@RequestBody HourContractPutRequestBody hourContractPutRequestBody){
+	public ResponseEntity<Void> update(@RequestBody HourContractPutRequestBody hourContractPutRequestBody){
 		 service.update(hourContractPutRequestBody);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}

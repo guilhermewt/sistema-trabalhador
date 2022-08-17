@@ -23,6 +23,7 @@ public class DepartmentService {
 	
 	private final DepartmentRepository repository;
 	
+	
 	public Page<Department> findAll(Pageable pageable){	
 		return repository.findAll(pageable);
 	}

@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.projetoTrabalhador.entities.HourContract;
@@ -24,7 +26,11 @@ public class HourContractService {
 
 	private final WorkerRepository workerRepository;
 
-	public List<HourContract> findAll() {
+	public Page<HourContract> findAll(Pageable pageable) {
+		return repository.findAll(pageable);
+	}
+	
+	public List<HourContract> findAllNonPageable() {
 		return repository.findAll();
 	}
 
@@ -32,11 +38,11 @@ public class HourContractService {
 		return repository.findById(id).orElseThrow(() -> new BadRequestException("hour contract not found"));
 	}
 
-	public void insert(HourContractPostRequestBody hourContractPostRequestBody, long id) {
-
+	public HourContract insert(HourContractPostRequestBody hourContractPostRequestBody, long id) {
+		findByIdOrElseThrowResourceNotFoundException(id);
 		HourContract contract = HourContractMapper.INSTANCE.toHourContract(hourContractPostRequestBody);
 		contract.setWorker(workerRepository.findById(id).get());
-		repository.save(contract);
+		return repository.save(contract);
 	}
 
 	public void delete(Long id) {
