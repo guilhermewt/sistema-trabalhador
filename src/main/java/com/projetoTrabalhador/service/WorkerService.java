@@ -62,13 +62,13 @@ public class WorkerService implements UserDetailsService {
 	}
 
 	public void update(WorkerPutRequestBody workerPutRequestBody) {
-		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+//		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 		try {
 			Worker worker = WorkerMapper.INSTANCE.toWorker(workerPutRequestBody);
 
 			Worker workerSaved = repository.findById(workerPutRequestBody.getId()).get();
 			worker.setId(workerSaved.getId());
-			worker.setPassword(passwordEncoder.encode(workerPutRequestBody.getPassword()));
+//			worker.setPassword(passwordEncoder.encode(workerPutRequestBody.getPassword()));
 
 			repository.save(worker);
 		} catch (NoSuchElementException e) {
