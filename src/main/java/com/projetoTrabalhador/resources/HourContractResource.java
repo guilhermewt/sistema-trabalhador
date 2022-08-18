@@ -44,8 +44,7 @@ public class HourContractResource {
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<HourContract> findById(@PathVariable long id){
 	    return ResponseEntity.ok(service.findByIdOrElseThrowResourceNotFoundException(id));
-	}
-	
+	}	
 	
 	@PostMapping(value="/{id}")
 	public ResponseEntity<HourContract> insert(@RequestBody @Valid HourContractPostRequestBody hourContractPostRequestBody, @PathVariable long id){

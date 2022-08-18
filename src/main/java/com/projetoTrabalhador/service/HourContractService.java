@@ -55,16 +55,11 @@ public class HourContractService {
 	}
 
 	public void update(HourContractPutRequestBody hourContractPutRequestBody) {
-		try {
-			HourContract savedHourContract = repository.findById(hourContractPutRequestBody.getId()).get();
-			HourContract contract = HourContractMapper.INSTANCE.toHourContract(hourContractPutRequestBody);
+		HourContract savedHourContract = findByIdOrElseThrowResourceNotFoundException(hourContractPutRequestBody.getId());
+		HourContract contract = HourContractMapper.INSTANCE.toHourContract(hourContractPutRequestBody);
 			
-			contract.setId(savedHourContract.getId());
-			repository.save(contract);
-
-		} catch (NoSuchElementException e) {
-			throw new BadRequestException(e.getMessage());
-		}
+		contract.setId(savedHourContract.getId());
+		repository.save(contract);
 	}
 
 }

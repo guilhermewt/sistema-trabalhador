@@ -25,9 +25,10 @@ public class HourContractCreator {
 	
 	public static HourContract hourContractUpdated() throws ParseException {
 		return HourContract.builder()
+				.id(1l)
 				.date(DateConvert.convertData("2024/08/17"))
-				.valuePerHour(22.0)
-				.hour(5)
+				.valuePerHour(24.0)
+				.hour(4)
 				.build();
 	}
 }
