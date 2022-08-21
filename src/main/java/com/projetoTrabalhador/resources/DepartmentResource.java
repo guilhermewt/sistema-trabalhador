@@ -55,13 +55,13 @@ public class DepartmentResource {
 	
 	@PostMapping
 	public ResponseEntity<Department> insert(@RequestBody @Valid DepartmentPostRequestBody departmentPostRequestBody){
-		return ResponseEntity.ok().body(service.insert(departmentPostRequestBody));
+		return new ResponseEntity<>(service.insert(departmentPostRequestBody), HttpStatus.CREATED);
 	}
 	
-	@DeleteMapping
+	@DeleteMapping(path = "/admin/{id}")
 	public ResponseEntity<Void> delete(@PathVariable long id){
 		service.delete(id);
-		return ResponseEntity.noContent().build();
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
 	@PutMapping

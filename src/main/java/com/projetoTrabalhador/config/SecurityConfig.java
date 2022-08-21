@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 @Log4j2
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -24,7 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/").permitAll();
-//		http.csrf().disable()
+		http.csrf().disable();
 //				// .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()
 //				.authorizeRequests()
 //				.antMatchers("/workers/admin/**").hasRole("ADMIN")
