@@ -31,12 +31,12 @@ public class HourContractResource {
 
 	private final HourContractService service;
 	
-	@GetMapping(value = "/find")
+	@GetMapping
 	public ResponseEntity<Page<HourContract>> findAll(Pageable pageable){
 		return ResponseEntity.ok(service.findAll(pageable));
 	}
 	
-	@GetMapping
+	@GetMapping(value = "/find")
 	public ResponseEntity<List<HourContract>> findAllNonPageable(){
 		return ResponseEntity.ok(service.findAllNonPageable());
 	}
@@ -48,7 +48,7 @@ public class HourContractResource {
 	
 	@PostMapping(value="/{id}")
 	public ResponseEntity<HourContract> insert(@RequestBody @Valid HourContractPostRequestBody hourContractPostRequestBody, @PathVariable long id){
-		return new ResponseEntity<HourContract>(service.insert(hourContractPostRequestBody, id), HttpStatus.NO_CONTENT);
+		return new ResponseEntity<HourContract>(service.insert(hourContractPostRequestBody, id), HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping(value="/{id}")
