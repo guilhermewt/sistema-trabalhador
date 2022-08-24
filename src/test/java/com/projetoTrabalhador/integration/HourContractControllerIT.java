@@ -34,6 +34,7 @@ public class HourContractControllerIT {
 	@Autowired
 	private HourContractRepository hourContractRepository;
 	
+	
 	@Test
 	@DisplayName("list return list of hourContract inside page object whenSuccessful")
 	void list_returnListOfHourContractInsidePageObject() throws ParseException {

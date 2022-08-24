@@ -56,10 +56,10 @@ public class HourContractServiceTest {
 		BDDMockito.doNothing().when(hourContractRepositoryMock).delete(ArgumentMatchers.any(HourContract.class));
 		
 		BDDMockito.when(workerRepositoryMock.findById(1l))
-		.thenReturn(Optional.of(WorkerCreator.validWorker()));
+		.thenReturn(Optional.of(WorkerCreator.createValidWorker()));
 		
 		BDDMockito.when(workerRepositoryMock.save(ArgumentMatchers.any(Worker.class)))
-		.thenReturn(WorkerCreator.validWorker());
+		.thenReturn(WorkerCreator.createValidWorker());
 		
 	}
 	
@@ -106,7 +106,7 @@ public class HourContractServiceTest {
 	@Test
 	@DisplayName("save return hourContract whenSuccessfull")
 	void save_ReturnsHourContract_whensuccessful() throws ParseException {
-		Worker worker = workerRepositoryMock.save(WorkerCreator.validWorker());		
+		Worker worker = workerRepositoryMock.save(WorkerCreator.createValidWorker());		
 		HourContract hourContract = hourContractService.insert(HourContractPostRequestBodyCreator.createHourContractPostRequestBody(),worker.getId());
 		Assertions.assertThat(hourContract).isNotNull().isEqualTo(HourContractCreator.createValidhourContract());	
 	}

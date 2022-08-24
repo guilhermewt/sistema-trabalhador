@@ -38,6 +38,11 @@ public class WorkerResource {
 		return ResponseEntity.ok(service.findAll());
 	}
 	
+	@GetMapping(value = "/admin/find")
+	public ResponseEntity<List<Worker>> findByName(@RequestParam String name){
+		return ResponseEntity.ok(service.findByName(name));
+	}
+	
 	@GetMapping(value = "/admin/{id}")
 	public ResponseEntity<Worker> findById(@AuthenticationPrincipal UserDetails userDetails,  @PathVariable long id){
 		log.info(userDetails);

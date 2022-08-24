@@ -37,6 +37,10 @@ public class WorkerService implements UserDetailsService {
 	public List<Worker> findAll() {
 		return repository.findAll();
 	}
+	
+	public List<Worker> findByName(String name){
+		return repository.findByNameContainingIgnoreCase(name);
+	}
 
 	public Worker findByIdOrElseThrowResourceNotFoundException(long id) {
 		return repository.findById(id).orElseThrow(() -> new BadRequestException("worker not found"));

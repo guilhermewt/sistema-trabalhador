@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -31,7 +32,7 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "tb_worker")
 @NoArgsConstructor
 @Data
-@EqualsAndHashCode(of= {"id","name"})
+@EqualsAndHashCode(of= {"id","name","userName","baseSalary","password"})
 @SuperBuilder
 public class Worker implements Serializable,UserDetails{
 	
@@ -40,6 +41,7 @@ public class Worker implements Serializable,UserDetails{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@NotEmpty(message = "the worker name cannot be empty")
 	private String name;
 	private String userName;
 	private Double baseSalary;

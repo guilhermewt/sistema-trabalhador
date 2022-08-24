@@ -11,14 +11,17 @@ import javax.persistence.OneToMany;
 import com.projetoTrabalhador.entities.Department;
 import com.projetoTrabalhador.entities.HourContract;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode(of= {"name"})
+@SuperBuilder
 public class WorkerPostRequestBody {
 	
 	private String name;
@@ -33,6 +36,7 @@ public class WorkerPostRequestBody {
 	
 	
 	@OneToMany(mappedBy="worker", cascade = CascadeType.ALL)
+	@Builder.Default
 	private Set<HourContract> contracts = new HashSet<>();
 
 	public WorkerPostRequestBody(String name, String userName, Double baseSalary, String password,
