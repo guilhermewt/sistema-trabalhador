@@ -8,6 +8,8 @@ import java.util.Set;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -34,7 +36,11 @@ public class WorkerService implements UserDetailsService {
 
 	private final DepartmentRepository departmentRepository;
 
-	public List<Worker> findAll() {
+	public Page<Worker> findAll(Pageable pageable) {
+		return repository.findAll(pageable);
+	}
+	
+	public List<Worker> findNonPageable() {
 		return repository.findAll();
 	}
 	
@@ -46,12 +52,12 @@ public class WorkerService implements UserDetailsService {
 		return repository.findById(id).orElseThrow(() -> new BadRequestException("worker not found"));
 	}
 
-	public void insert(WorkerPostRequestBody workerPostRequestBody, long id) {
+	public Worker insert(WorkerPostRequestBody workerPostRequestBody, long id) {
 		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 		workerPostRequestBody.setPassword(passwordEncoder.encode(workerPostRequestBody.getPassword()));
 		workerPostRequestBody.setDepartment(departmentRepository.findById(id).get());
 
-		repository.save(WorkerMapper.INSTANCE.toWorker(workerPostRequestBody));
+		return repository.save(WorkerMapper.INSTANCE.toWorker(workerPostRequestBody));
 	}
 
 	public void delete(long id) {

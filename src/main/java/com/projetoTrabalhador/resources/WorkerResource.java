@@ -2,6 +2,8 @@ package com.projetoTrabalhador.resources;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -33,9 +35,14 @@ public class WorkerResource {
 
 	private final WorkerService service;
 	 
+	@GetMapping(value = "/admin/all")
+	public ResponseEntity<Page<Worker>> findAll(Pageable pageable){
+		return ResponseEntity.ok(service.findAll(pageable));
+	}
+	
 	@GetMapping(value = "/admin")
-	public ResponseEntity<List<Worker>> findAll(){
-		return ResponseEntity.ok(service.findAll());
+	public ResponseEntity<List<Worker>> findAllNonPageable(){
+		return ResponseEntity.ok(service.findNonPageable());
 	}
 	
 	@GetMapping(value = "/admin/find")
@@ -52,7 +59,7 @@ public class WorkerResource {
 	@PostMapping(value="/admin/{id}")
 	public ResponseEntity<Worker> insert(@RequestBody WorkerPostRequestBody workerPostRequestBody,@PathVariable long id){
 		service.insert(workerPostRequestBody, id);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(service.insert(workerPostRequestBody, id), HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping(value="/admin/{id}")
@@ -62,7 +69,7 @@ public class WorkerResource {
 	}
 
 	@PutMapping(value="/admin/")
-	public ResponseEntity<Worker> update(@RequestBody WorkerPutRequestBody workerPutRequestBody){
+	public ResponseEntity<Void> update(@RequestBody WorkerPutRequestBody workerPutRequestBody){
 	    service.update(workerPutRequestBody);
 	    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
