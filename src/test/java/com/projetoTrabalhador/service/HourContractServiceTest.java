@@ -121,7 +121,7 @@ public class HourContractServiceTest {
 	@Test
 	@DisplayName("delete removes hourContract whenSuccessful")
 	void delete_removesHourContract_whenSuccessful() {
-		Assertions.assertThatCode(() -> hourContractService.delete(1l));		
+		Assertions.assertThatCode(() -> hourContractService.delete(1l)).doesNotThrowAnyException();		
 	}
 	
 }

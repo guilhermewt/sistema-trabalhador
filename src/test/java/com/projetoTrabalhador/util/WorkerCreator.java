@@ -11,7 +11,6 @@ public class WorkerCreator {
 				.userName("gui")
 				.baseSalary(1.200)
 				.password("1234567")
-				.authorities("ROLE_ADMIN,ROLE_USER")
 				.build();
 	}
 	

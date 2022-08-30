@@ -20,7 +20,6 @@ import com.projetoTrabalhador.entities.HourContract;
 import com.projetoTrabalhador.requests.HourContractPostRequestBody;
 import com.projetoTrabalhador.requests.HourContractPutRequestBody;
 import com.projetoTrabalhador.service.HourContractService;
-import com.projetoTrabalhador.service.WorkerService;
 import com.projetoTrabalhador.util.HourContractCreator;
 import com.projetoTrabalhador.util.HourContractPostRequestBodyCreator;
 import com.projetoTrabalhador.util.HourContractPutRequestBodyCreator;
@@ -56,7 +55,7 @@ public class HourContractResourceTest {
 	
 	@Test
 	@DisplayName("list return list of hourContract inside Page Object whenSuccessful")
-	void list_ReturnListOfHourContractInsidePageObject_WhenSuccessful() throws ParseException {
+	void list_ReturnListOfHourContractInsidePageObject_WhenSuccessful()  {
 		HourContract expectedHourContract = HourContractCreator.createValidhourContract();
 		Page<HourContract> hourContractPage = hourContractResource.findAll(null).getBody();
 		
@@ -68,7 +67,7 @@ public class HourContractResourceTest {
 	
 	@Test
 	@DisplayName("list return list of HourContract when successful")
-	void list_ReturnListOfHourContract_whenSuccessful() throws ParseException {
+	void list_ReturnListOfHourContract_whenSuccessful(){
 		HourContract expectedHourContract = HourContractCreator.createValidhourContract();
 		List<HourContract> hourContract = hourContractResource.findAllNonPageable().getBody();
 		
@@ -78,7 +77,7 @@ public class HourContractResourceTest {
 	
 	@Test
 	@DisplayName("findById return hourContract whenSuccessful")
-	void findById_ReturnHourContract_WhenSuccessful() throws ParseException {
+	void findById_ReturnHourContract_WhenSuccessful() {
 		Long expectedId = HourContractCreator.createValidhourContract().getId();
 		HourContract hourContract = this.hourContractResource.findById(1).getBody();
 		
@@ -88,14 +87,14 @@ public class HourContractResourceTest {
 	
 	@Test
 	@DisplayName("save return hourContract whenSuccessfull")
-	void save_ReturnsHourContract_whensuccessful() throws ParseException {
+	void save_ReturnsHourContract_whensuccessful() {
 		HourContract hourContract = hourContractServiceMock.insert(HourContractPostRequestBodyCreator.createHourContractPostRequestBody(),1);
 		Assertions.assertThat(hourContract).isNotNull().isEqualTo(HourContractCreator.createValidhourContract());	
 	}
 	
 	@Test
 	@DisplayName("update replace hourContract whenSuccessful")
-	void update_replaceHourContract_WhenSuccessful() throws ParseException {
+	void update_replaceHourContract_WhenSuccessful() {
 		Assertions.assertThatCode(() -> hourContractResource.update(HourContractPutRequestBodyCreator.createHourContractPutRequestBody())).doesNotThrowAnyException();
 		
 //		ResponseEntity<Void> entity = this.hourContractResource.update(HourContractPutRequestBodyCreator.createHourContractPutRequestBody());

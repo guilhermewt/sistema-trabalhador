@@ -1,12 +1,10 @@
 package com.projetoTrabalhador.util;
 
-import java.text.ParseException;
-
 import com.projetoTrabalhador.requests.HourContractPostRequestBody;
 
 public class HourContractPostRequestBodyCreator {
 	
-	public static HourContractPostRequestBody createHourContractPostRequestBody() throws ParseException {
+	public static HourContractPostRequestBody createHourContractPostRequestBody(){
 		return HourContractPostRequestBody.builder()
 				.date(HourContractCreator.hourContractToBeSaved().getDate())
 				.valuePerHour(HourContractCreator.hourContractToBeSaved().getValuePerHour())

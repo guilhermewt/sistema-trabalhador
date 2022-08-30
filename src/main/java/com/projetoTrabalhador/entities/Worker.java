@@ -53,8 +53,7 @@ public class Worker implements Serializable,UserDetails{
 	private Department department;
 	
 	@OneToMany(mappedBy="worker", cascade = CascadeType.ALL)
-	@Builder.Default
-	private Set<HourContract> contracts = new HashSet<>();
+	private Set<HourContract> contracts;
 	
 	public Worker(Long id, String name, String userName, Double baseSalary, String password, String authorities) {
 		super();

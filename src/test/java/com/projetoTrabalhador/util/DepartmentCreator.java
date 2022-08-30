@@ -9,7 +9,7 @@ public class DepartmentCreator {
 	}
 	
 	public static Department createValidDepartment() {
-		return Department.builder().name("Design").id(1l).build();
+		return Department.builder().id(1l).name("Design").build();
 	}
 	
 	public static Department createValidUpdateDepartment() {

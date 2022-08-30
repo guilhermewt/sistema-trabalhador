@@ -33,6 +33,7 @@ import lombok.RequiredArgsConstructor;
 public class WorkerService implements UserDetailsService {
 
 	private final WorkerRepository repository;
+	
 
 	private final DepartmentRepository departmentRepository;
 
@@ -90,7 +91,7 @@ public class WorkerService implements UserDetailsService {
 	public double income(long id, int year, int month) {
 		Worker worker = repository.findById(id).get();
 		Double sum = worker.getBaseSalary();
-
+		
 		Set<HourContract> contracts = worker.getContracts();
 
 		Calendar cal = Calendar.getInstance();

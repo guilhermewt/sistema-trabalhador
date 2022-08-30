@@ -4,11 +4,19 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.projetoTrabalhador.service.exceptions.BadRequestException;
+
 public class DateConvert {
 
-	public static Date convertData(String text) throws ParseException {
+	public static Date convertData(String text)  {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-	    Date date = sdf.parse(text);
+	    Date date = new Date();
+		try {
+			date = sdf.parse(text);
+		} catch (ParseException e) {
+			throw new BadRequestException(e.getMessage());
+		}
+		
 		return date;
 	}
 	
