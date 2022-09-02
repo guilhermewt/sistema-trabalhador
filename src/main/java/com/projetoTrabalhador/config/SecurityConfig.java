@@ -23,30 +23,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/").permitAll();
-		http.csrf().disable();
-//				// .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()
-//				.authorizeRequests()
-//				.antMatchers("/workers/admin/**").hasRole("ADMIN")
-//				.antMatchers("/workers/**").hasRole("USER")
-//				.antMatchers("/departments/**").hasRole("USER")
-//				.antMatchers("/contracts/**").hasRole("USER")
-//				.anyRequest()
-//				.authenticated().and()
-//				.httpBasic();
+//		http.authorizeRequests().antMatchers("/").permitAll();
+		http.csrf().disable()
+				// .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()
+				.authorizeRequests()
+				.antMatchers("/workers/admin/**").hasRole("ADMIN")
+				.antMatchers("/workers/**").hasRole("USER")
+				.antMatchers("/departments/admin/**").hasRole("ADMIN")
+				.antMatchers("/departments/**").hasRole("USER")
+				.antMatchers("/contracts/**").hasRole("USER")
+				.anyRequest()
+				.authenticated().and()
+				.httpBasic();
 	}
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-//		log.info("password Encoder {}", passwordEncoder.encode("trabalhador"));
-//		auth.inMemoryAuthentication()
-//		.withUser("guilherme2")
-//		.password(passwordEncoder.encode("trabalhador")).roles("USER", "ADMIN")
-//		.and()
-//		.withUser("trabalhador2")
-//		.password(passwordEncoder.encode("trabalhador")).roles("USER");
-//
-//		auth.userDetailsService(workerService).passwordEncoder(passwordEncoder);
+		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		log.info("password Encoder {}", passwordEncoder.encode("trabalhador"));
+		auth.inMemoryAuthentication()
+		.withUser("guilherme2")
+		.password(passwordEncoder.encode("trabalhador")).roles("USER", "ADMIN")
+		.and()
+		.withUser("trabalhador2")
+		.password(passwordEncoder.encode("trabalhador")).roles("USER");
+
+		auth.userDetailsService(workerService).passwordEncoder(passwordEncoder);
 	}
 }

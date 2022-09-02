@@ -25,7 +25,7 @@ public class WorkerRepositoryTest {
 	@Test
 	@DisplayName("save persist Worker whenSuccessful")
 	void save_persistWorker_WhenSuccessful() {
-		Worker worker = WorkerCreator.createWorkerToBeSaved();
+		Worker worker = WorkerCreator.createWorkerADMIN_ToBeSaved();
 		Worker savedWorker = this.workerRepository.save(worker);
 		
 		Assertions.assertThat(savedWorker).isNotNull();
@@ -36,7 +36,7 @@ public class WorkerRepositoryTest {
 	@Test
 	@DisplayName("update replace worker whenSuccessful")
 	void update_replaceWorker_WhenSuccessful() {
-		Worker worker = WorkerCreator.createWorkerToBeSaved();
+		Worker worker = WorkerCreator.createWorkerADMIN_ToBeSaved();
 		Worker savedWorker = this.workerRepository.save(worker);
 		
 		savedWorker = WorkerCreator.createValidUpdatedWorker();
@@ -52,7 +52,7 @@ public class WorkerRepositoryTest {
 	@Test
 	@DisplayName("delete removes worker whenSuccessful")
 	void delete_removesWorker_WhenSuccessful() {
-		Worker savedWorker = this.workerRepository.save(WorkerCreator.createWorkerToBeSaved());
+		Worker savedWorker = this.workerRepository.save(WorkerCreator.createWorkerADMIN_ToBeSaved());
 		
 		this.workerRepository.delete(savedWorker);
 		
@@ -64,7 +64,7 @@ public class WorkerRepositoryTest {
 	@Test
 	@DisplayName("findbyname return list of Worker whenSuccessful")
 	void findByName_returnListOfWorker_WhenSuccessful() {
-		Worker workerToBeSaved = WorkerCreator.createWorkerToBeSaved();
+		Worker workerToBeSaved = WorkerCreator.createWorkerADMIN_ToBeSaved();
 		Worker savedWorker = this.workerRepository.save(workerToBeSaved);
 		String name = savedWorker.getName();
 		List<Worker> workers = this.workerRepository.findByNameContainingIgnoreCase(name);
@@ -83,7 +83,7 @@ public class WorkerRepositoryTest {
 	@Test
 	@DisplayName("findById return worker whenSuccessful")
 	void findById_ReturnWorker_WhenSuccessful() {
-		Worker workerToBeSaved = WorkerCreator.createWorkerToBeSaved();
+		Worker workerToBeSaved = WorkerCreator.createWorkerADMIN_ToBeSaved();
 		Worker savedWorker = this.workerRepository.save(workerToBeSaved);
 		
 		Worker worker = this.workerRepository.findById(savedWorker.getId()).get();
@@ -95,7 +95,7 @@ public class WorkerRepositoryTest {
 	@Test
 	@DisplayName("listAll return list of Worker whenSuccessful")
 	void listAll_returnListOfWorker_WhenSuccessful() {
-		Worker workerToBeSaved = WorkerCreator.createWorkerToBeSaved();
+		Worker workerToBeSaved = WorkerCreator.createWorkerADMIN_ToBeSaved();
 		Worker savedWorker = this.workerRepository.save(workerToBeSaved);
 		List<Worker> worker = this.workerRepository.findAll();
 		
