@@ -7,10 +7,16 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -19,8 +25,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 
 import com.projetoTrabalhador.entities.HourContract;
+import com.projetoTrabalhador.entities.Worker;
 import com.projetoTrabalhador.repository.HourContractRepository;
+import com.projetoTrabalhador.repository.WorkerRepository;
 import com.projetoTrabalhador.util.HourContractCreator;
+import com.projetoTrabalhador.util.WorkerCreator;
 import com.projetoTrabalhador.wrapper.PageableResponse;
 
 @SpringBootTest( webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -29,18 +38,38 @@ import com.projetoTrabalhador.wrapper.PageableResponse;
 public class HourContractControllerIT {
 	
 	@Autowired
-	private TestRestTemplate testRestTemplate;
+	@Qualifier(value = "testRestTemplateRoleUser")
+	private TestRestTemplate testRestTemplateRoleUser;
 	
 	@Autowired
 	private HourContractRepository hourContractRepository;
+	
+	@Autowired
+	private WorkerRepository workerRepository;
+	
+	private static final Worker USER = WorkerCreator.createWorkerUSER_ToBeSaved();
+	
+	@TestConfiguration
+	@Lazy
+	static class Config{
+		@Bean(name = "testRestTemplateRoleUser")
+		public TestRestTemplate testRestTemplateUserCreator(@Value("${local.server.port}") int port) {
+			RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder()
+					.rootUri("http://localhost:" + port)
+					.basicAuthentication("welliston", "trabalhador");
+			return new TestRestTemplate(restTemplateBuilder);
+		}
+	}
 	
 	
 	@Test
 	@DisplayName("list return list of hourContract inside page object whenSuccessful")
 	void list_returnListOfHourContractInsidePageObject() throws ParseException {
-		HourContract savedhourContract = HourContractCreator.createValidhourContract();
+		workerRepository.save(USER);
 		
-		PageableResponse<HourContract> hourContractPage = testRestTemplate.exchange("/contracts", HttpMethod.GET,null,
+		HourContract savedhourContract = hourContractRepository.save(HourContractCreator.hourContractToBeSaved());
+		
+		PageableResponse<HourContract> hourContractPage = testRestTemplateRoleUser.exchange("/contracts", HttpMethod.GET,null,
 				new ParameterizedTypeReference<PageableResponse<HourContract>>() {
 		}).getBody();
 		
@@ -53,9 +82,11 @@ public class HourContractControllerIT {
 	@Test
 	@DisplayName("list return list of HourContract whenSuccessful")
 	void list_returnListOfHourContract_WhenSucceful() throws ParseException{
-		HourContract savedHourContract = HourContractCreator.createValidhourContract();
+		workerRepository.save(USER);
 		
-		List<HourContract> hourContract = testRestTemplate.exchange("/contracts/find", HttpMethod.GET,null,
+		HourContract savedHourContract = hourContractRepository.save(HourContractCreator.hourContractToBeSaved());
+		
+		List<HourContract> hourContract = testRestTemplateRoleUser.exchange("/contracts/find", HttpMethod.GET,null,
 				new ParameterizedTypeReference<List<HourContract>>() {
 				}).getBody();
 		
@@ -66,9 +97,13 @@ public class HourContractControllerIT {
 	@Test
 	@DisplayName("findById return hourContract whenSuccessful")
 	void findById_reeturnHourContract_WhenSuccessful() throws ParseException{
-		Long expectedId = HourContractCreator.createValidhourContract().getId();
+		workerRepository.save(USER);
 		
-		HourContract hourContract = testRestTemplate.getForObject("/contracts/{id}", HourContract.class,expectedId);
+		HourContract savedHourContract = hourContractRepository.save(HourContractCreator.hourContractToBeSaved());
+		
+		Long expectedId = savedHourContract.getId();
+		
+		HourContract hourContract = testRestTemplateRoleUser.getForObject("/contracts/{id}", HourContract.class,expectedId);
 		
 		Assertions.assertThat(hourContract).isNotNull();
 		Assertions.assertThat(hourContract.getId()).isEqualTo(expectedId);
@@ -78,10 +113,15 @@ public class HourContractControllerIT {
 	@Test
 	@DisplayName("update replace hourContract whenSuccessful")
 	void update_replaceHourContract_WhenSuccessful() throws ParseException{
-		HourContract savedHourContract = HourContractCreator.hourContractUpdated();
+		workerRepository.save(USER);
 		
-		ResponseEntity<Void> hourContractResponseEntity = testRestTemplate.exchange("/contracts/", HttpMethod.PUT,
-				new HttpEntity<>(savedHourContract),Void.class);
+		HourContract hourContract = hourContractRepository.save(HourContractCreator.hourContractToBeSaved());
+		
+		hourContract = hourContractRepository.save(HourContractCreator.hourContractUpdated());
+				
+
+		ResponseEntity<Void> hourContractResponseEntity = testRestTemplateRoleUser.exchange("/contracts/", HttpMethod.PUT,
+				new HttpEntity<>(hourContract),Void.class);
 		
 		Assertions.assertThat(hourContractResponseEntity).isNotNull();
 		Assertions.assertThat(hourContractResponseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
@@ -90,12 +130,17 @@ public class HourContractControllerIT {
 	@Test
 	@DisplayName("delete removes hourContract whenSuccessful")
 	void delete_removesHourContract_WhenSucceful() throws ParseException{
-		Long expectedId = HourContractCreator.createValidhourContract().getId();
+		workerRepository.save(USER);
 		
-		ResponseEntity<Void> hourContractResponseEntity = testRestTemplate.exchange("/contracts/{id}", HttpMethod.DELETE,
+		HourContract hourContract = hourContractRepository.save(HourContractCreator.hourContractToBeSaved());
+		
+		Long expectedId = hourContract.getId();
+		
+		ResponseEntity<Void> hourContractResponseEntity = testRestTemplateRoleUser.exchange("/contracts/{id}", HttpMethod.DELETE,
 				null,Void.class,expectedId);
 		
 		Assertions.assertThat(hourContractResponseEntity).isNotNull();
 		Assertions.assertThat(hourContractResponseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 	}
+	
 }
